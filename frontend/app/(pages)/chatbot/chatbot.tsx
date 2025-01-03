@@ -39,8 +39,8 @@ const chatbot = () => {
               <div
                 className={`inline-block p-2 rounded-lg ${
                   message.role === "user"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-800"
+                    ? "bg-[#091e3f] text-white"
+                    : "bg-[#185d55] text-white"
                 }`}
               >
                 {message.content}

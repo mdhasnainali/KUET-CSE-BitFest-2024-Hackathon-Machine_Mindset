@@ -7,12 +7,20 @@ import {
 } from "@/components/ui/sheet";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { FaBlog, FaEnvelope, FaHome, FaInfoCircle, FaSignInAlt, FaCogs } from "react-icons/fa"; // Import new icons for missing menu items
+import {
+  FaBlog,
+  FaEnvelope,
+  FaHome,
+  FaInfoCircle,
+  FaSignInAlt,
+  FaCogs,
+} from "react-icons/fa";
 import Profile from "@/components/profile/Profile";
 import { Theme } from "./ui/Theme";
 
 const Navbar = async () => {
   const isLogin = true;
+  const isTeacher = false;
 
   return (
     <nav className="bg-white z-50 dark:bg-[#020817] bg-opacity-30 backdrop-blur sticky top-0 p-4 px-8">
@@ -41,20 +49,24 @@ const Navbar = async () => {
               </span>
             </Link>
           </li>
-          <li>
-            <Link href="/dashboard">
-              <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
-                Dashboard
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/content-craft">
-              <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
-                ContentCraft
-              </span>
-            </Link>
-          </li>
+          {isTeacher && (
+            <>
+              <li>
+                <Link href="/dashboard">
+                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
+                    Dashboard
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/content-craft">
+                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
+                    ContentCraft
+                  </span>
+                </Link>
+              </li>
+            </>
+          )}
           <li>
             <Link href="/contribute">
               <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
@@ -67,11 +79,11 @@ const Navbar = async () => {
           <Theme />
           {isLogin ? (
             <>
-              <Profile />
+              <Profile isTeacher={isTeacher} />
             </>
           ) : (
             <>
-              <Link href={"/login"}>
+              <Link href={"/auth"}>
                 <Button>
                   <FaSignInAlt className="mr-3" />
                   Login
@@ -82,14 +94,20 @@ const Navbar = async () => {
         </div>
         {/* For mobile devices */}
         <div className="md:hidden block">
-          <MobileNav isLogin={isLogin} />
+          <MobileNav isLogin={isLogin} isTeacher={isTeacher} />
         </div>
       </div>
     </nav>
   );
 };
 
-const MobileNav = ({ isLogin }: { isLogin: any }) => {
+const MobileNav = ({
+  isLogin,
+  isTeacher,
+}: {
+  isLogin: any;
+  isTeacher: any;
+}) => {
   return (
     <Sheet>
       <Theme />
@@ -136,39 +154,49 @@ const MobileNav = ({ isLogin }: { isLogin: any }) => {
               </SheetTrigger>
             </Link>
           </li>
-          <li>
-            <Link href="/dashboard">
-              <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
-                  <FaInfoCircle className="mr-3" />
-                  Dashboard
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link href="/content-craft">
-              <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
-                <FaCogs className="mr-3" />
-                ContentCraft
-              </span>
-            </Link>
-          </li>
+          {isTeacher && (
+            <>
+              <li>
+                <Link href="/dashboard">
+                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
+                    <FaInfoCircle className="mr-3" />
+                    Dashboard
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/content-craft">
+                  <SheetTrigger>
+                    <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
+                      <FaCogs className="mr-3" />
+                      ContentCraft
+                    </span>
+                  </SheetTrigger>
+                </Link>
+              </li>
+            </>
+          )}
+
           <li>
             <Link href="/contribute">
-              <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
-                <FaEnvelope className="mr-3" />
-                Contribute
-              </span>
+              <SheetTrigger>
+                <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
+                  <FaEnvelope className="mr-3" />
+                  Contribute
+                </span>
+              </SheetTrigger>
             </Link>
           </li>
         </ul>
         <div className="space-x-3 absolute left-2 bottom-2 flex items-center">
           {isLogin ? (
             <div className="dark:bg-gray-800 flex items-center space-x-2 dark:text-white p-4 rounded">
-              <Profile />
+              <Profile isTeacher={isTeacher} />
+              <span>Md Tofaal Ahmed</span>
             </div>
           ) : (
             <div className="dark:bg-gray-800 dark:text-white p-4 rounded">
-              <Link href="/login">
+              <Link href="/auth">
                 <SheetTrigger>
                   <Button>
                     <FaSignInAlt className="mr-3" />

@@ -4,7 +4,7 @@ import Image from "next/image";
 const Avatarr = () => {
   return (
     <Avatar>
-      <AvatarImage src={"/public.png"} />
+      <AvatarImage src={"/chatbot.png"} />
       <AvatarFallback>
         <Image width={80} height={80} src="/chatbot.png" alt="" />
       </AvatarFallback>

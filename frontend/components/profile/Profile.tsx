@@ -4,11 +4,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Avatarr from "./Avatarr";
-import Logout from "./Logout";
-import { Button } from "../ui/button";
 import EditProfile from "./EditProfile";
+import Logout from "./Logout";
 
-const Profile = () => {
+const Profile = ({isTeacher}:{isTeacher:any}) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -27,7 +26,7 @@ const Profile = () => {
         </div>
         <div></div>
         <div className="mt-6 gap-3 flex items-center justify-center">  
-          <EditProfile />
+          <EditProfile isTeacher={isTeacher} />
           <Logout />
         </div>
       </DropdownMenuContent>
