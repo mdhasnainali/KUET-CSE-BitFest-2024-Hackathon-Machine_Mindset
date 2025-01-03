@@ -4,7 +4,7 @@ import Link from "next/link";
 const EmailConfirmation = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[90vh] bg-white dark:bg-[#020817]">
-      <div className="bg-black shadow-md p-8 rounded-lg text-center max-w-sm">
+      <div className="bg-black border shadow-md p-8 rounded-lg text-center max-w-sm">
         <img
           src="/mail.jpeg"
           alt="Email confirmation"

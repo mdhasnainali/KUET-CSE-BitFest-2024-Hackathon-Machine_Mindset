@@ -36,9 +36,9 @@ const Navbar = () => {
         setIsAdmin(true);
       }
     }
-    console.log(user.role);
+    // console.log(user.role);
   }, []);
-  console.log(isAdmin);
+  // console.log(isAdmin);
 
   return (
     <nav className="bg-white z-50 dark:bg-[#020817] bg-opacity-30 backdrop-blur sticky top-0 p-4 px-8">
