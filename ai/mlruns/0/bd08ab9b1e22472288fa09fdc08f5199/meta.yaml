@@ -1,0 +1,15 @@
+artifact_uri: file:///home/hasnain/ai/mlruns/0/bd08ab9b1e22472288fa09fdc08f5199/artifacts
+end_time: 1735901840344
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: bd08ab9b1e22472288fa09fdc08f5199
+run_name: test_ololo
+run_uuid: bd08ab9b1e22472288fa09fdc08f5199
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1735901838783
+status: 4
+tags: []
+user_id: hasnain

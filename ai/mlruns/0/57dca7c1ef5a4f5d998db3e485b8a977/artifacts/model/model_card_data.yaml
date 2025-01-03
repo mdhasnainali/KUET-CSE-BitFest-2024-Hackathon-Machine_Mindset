@@ -1,0 +1,12 @@
+base_model: meta-llama/Meta-Llama-3.1-8B
+language:
+- en
+library_name: transformers
+license: llama3.1
+tags:
+- llama-3
+- llama
+- meta
+- facebook
+- unsloth
+- transformers
