@@ -1,5 +1,5 @@
 from django.urls import path
-from public.views import PublicContentView, SearchContentView
+from misc.views import PublicContentView, SearchContentView, ChatBotView
 
 urlpatterns = [
     path(
@@ -15,6 +15,11 @@ urlpatterns = [
     path(
         "search/",
         SearchContentView.as_view(),
+        name="registration_student",
+    ),
+    path(
+        "chatbot/",
+        ChatBotView.as_view(),
         name="registration_student",
     ),
 ]

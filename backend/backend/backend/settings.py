@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     "administrator.apps.AdministratorConfig",
     "student.apps.StudentConfig",
     "teacher.apps.TeacherConfig",
-    "public.apps.PublicConfig",
+    "misc.apps.MiscConfig",
 ]
 
 MIDDLEWARE = [

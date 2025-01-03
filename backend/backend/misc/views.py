@@ -1,9 +1,9 @@
 from teacher.models import Content
 
 # serializers
-from public.serializers import SearchSerializer
+from misc.serializers import SearchSerializer, ChatBotSerializer
 from teacher.serializers import (
-    ContentSerializer,
+    ContentSerializer,    
 )
 
 # for rest api
@@ -50,3 +50,20 @@ class SearchContentView(APIView):
         )
         serializer = ContentSerializer(content, many=True)
         return Response(serializer.data)
+
+
+class ChatBotView(APIView):
+    """
+    ChatBot
+    """
+
+    def post(self, request, *args, **kwargs):
+        serializer = ChatBotSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=400)
+
+        return Response(
+            {
+                "message": "Hello! I am a ChatBot. I am here to help you. How can I help you today?"
+            }
+        )

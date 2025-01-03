@@ -67,7 +67,7 @@ urlpatterns = [
     path("get-access-token/", TokenRefreshView.as_view(), name="get-access-token"),
     path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     # ---------- End Auth ----------
-    path("public/", include("public.urls")),
+    path("misc/", include("misc.urls")),
     path("teacher/", include("teacher.urls")),
     path("student/", include("student.urls")),
     path("administrator/", include("administrator.urls")),
