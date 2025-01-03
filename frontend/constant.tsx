@@ -118,21 +118,3 @@ export const MetricValues = [
   },
   { title: "Engagements", value: "12", description: "Times Read" },
 ];
-export const MetricValuesAdmin = [
-  {
-    title: "Total Students",
-    value: "15,234",
-    description: "Total students registered",
-  },
-  {
-    title: "Total Teachers",
-    value: "42",
-    description: "Number of teachers registered",
-  },
-  {
-    title: "Chatbot Interactions",
-    value: "328",
-    description: "Total chatbot conversations",
-  },
-  { title: "Total Pdf", value: "12", description: "Number of Padf" },
-];
