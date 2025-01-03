@@ -17,6 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from administrator.views import CustomConfirmEmailView
 from rest_framework_simplejwt.views import TokenRefreshView
 from dj_rest_auth.registration.views import VerifyEmailView
 from rest_framework_simplejwt.views import TokenVerifyView
@@ -33,12 +34,15 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # ---------- Auth ------------
     path("rest-auth/login/", LoginWthPermission.as_view(), name="login_view"),
+    path("rest-auth/registration/account-confirm-email/<str:key>/", CustomConfirmEmailView.as_view(), name="account_email_verification_sent"),
     # Password Change
     # path(
     #     "rest-auth/password/change/",
     #     CustomPasswordChangeView.as_view(),
     #     name="password_change",
     # ),
+
+
     path("rest-auth/", include("dj_rest_auth.urls")),
     path(
         "rest-auth/registration/account-confirm-email/",
@@ -63,6 +67,7 @@ urlpatterns = [
     path("get-access-token/", TokenRefreshView.as_view(), name="get-access-token"),
     path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     # ---------- End Auth ----------
+    path("public/", include("public.urls")),
     path("teacher/", include("teacher.urls")),
     path("student/", include("student.urls")),
     path("administrator/", include("administrator.urls")),

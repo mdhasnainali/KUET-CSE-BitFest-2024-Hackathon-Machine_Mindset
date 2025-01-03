@@ -8,6 +8,7 @@ class Teacher(models.Model):
     )
     name = models.CharField(max_length=100)
     subject = models.CharField(max_length=100)
+    image_url = models.URLField(blank=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.teacher.name} {self.teacher.email}"
@@ -17,12 +18,13 @@ class Content(models.Model):
     teacher = models.ForeignKey(
         Teacher, on_delete=models.CASCADE, related_name="content"
     )
-    title = models.CharField(max_length=100)
-    caption = models.CharField(max_length=500)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    caption = models.CharField(max_length=500, blank=True, null=True)
     banglish = models.TextField()
-    bangla = models.TextField()
-    pdf_file = models.FileField(upload_to="pdfs/")
+    bangla = models.TextField(blank=True, null=True)
+    pdf_file = models.FileField(upload_to="pdfs/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    public = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.title

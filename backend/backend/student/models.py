@@ -9,6 +9,7 @@ class Student(models.Model):
     name = models.CharField(max_length=100)
     roll = models.CharField(max_length=100)
     level = models.CharField(max_length=100)
+    image_url = models.URLField(blank=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.student} {self.student.email}"

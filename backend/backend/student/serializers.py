@@ -10,7 +10,8 @@ class StudentRegistrationSerializer(RegisterSerializer):
     )  # by default allow_null = False
     name = serializers.CharField(required=True)
     roll = serializers.CharField(required=True)
-    level = serializers.IntegerField(required=True)
+    level = serializers.CharField(required=True)
+    image_url = serializers.URLField(required=False, allow_null=True)
 
     def get_cleaned_data(self):
         data = super(StudentRegistrationSerializer, self).get_cleaned_data()
@@ -18,6 +19,7 @@ class StudentRegistrationSerializer(RegisterSerializer):
             "name": self.validated_data.get("name", ""),
             "roll": self.validated_data.get("roll", ""),
             "level": self.validated_data.get("level", ""),
+            "image_url": self.validated_data.get("image_url", ""),
         }
         data.update(extra_data)
         return data
@@ -31,6 +33,7 @@ class StudentRegistrationSerializer(RegisterSerializer):
             name=self.validated_data.get("name"),
             roll=self.validated_data.get("roll"),
             level=self.validated_data.get("level"),
+            image_url=self.validated_data.get("image_url"),
         )
         student.save()
         return user

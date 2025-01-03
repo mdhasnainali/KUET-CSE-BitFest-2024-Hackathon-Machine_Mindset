@@ -1,11 +1,19 @@
-from django.contrib.auth import login as django_login
+# miscellaneous imports
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-# authentication
+# for logging in
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
+
+# for email confirmation
+from allauth.account.views import ConfirmEmailView
+from allauth.account.models import EmailConfirmationHMAC, EmailConfirmation
+from django.shortcuts import redirect
+from django.http import HttpResponse
+
+
 
 
 class LoginWthPermission(APIView):
@@ -19,7 +27,7 @@ class LoginWthPermission(APIView):
         if not user:
             return Response(
                 {"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
-            )        
+            )
 
         # Generate tokens
         refresh = RefreshToken.for_user(user)
@@ -44,3 +52,23 @@ class LoginWthPermission(APIView):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
+
+
+# Custom Confirm Email View
+class CustomConfirmEmailView(ConfirmEmailView):
+
+    def get(self, *args, **kwargs):
+        key = kwargs["key"]
+        try:
+            confirmation = EmailConfirmationHMAC.from_key(key)
+        except EmailConfirmation.DoesNotExist:
+            try:
+                confirmation = EmailConfirmation.objects.get(key=key.lower())
+            except EmailConfirmation.DoesNotExist:
+                confirmation = None
+
+        if confirmation:
+            confirmation.confirm(self.request)
+            return redirect("https://petconnect-1-26xc.onrender.com/confirmation-email")
+        else:
+            return HttpResponse("Invalid or expired token", status=400)
