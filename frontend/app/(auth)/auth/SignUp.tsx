@@ -5,7 +5,7 @@ import Student from "./Student";
 
 const SignUp = ({isRightPanelActive}:{isRightPanelActive:any}) => {
   return (
-    <Tabs defaultValue="Student" className="w-[400px]">
+    <Tabs defaultValue="Teacher" className="w-[400px]">
       <TabsList className={`absolute top-8 z-10 right-24 cursor-pointer ${isRightPanelActive ? "" : "hidden"}`}>
         <TabsTrigger value="Teacher">Teacher</TabsTrigger>
         <TabsTrigger value="Student">Student</TabsTrigger>

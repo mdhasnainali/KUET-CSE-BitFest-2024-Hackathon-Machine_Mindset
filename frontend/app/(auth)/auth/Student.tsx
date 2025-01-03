@@ -2,30 +2,105 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
+import { toast } from "sonner";
+import axios from "axios";
+
 const Student = () => {
-  const [image, setImage] = useState<string | null>(null);
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setImage(reader.result as string);
-        };
-        reader.readAsDataURL(file);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
+  const [className, setclassName] = useState("");
+  const [roll, setRoll] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [isUploading, setIsUploading] = useState(false); // Add state for upload status
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const imgbbAPIKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+      const response = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`,
+        formData
+      );
+
+      const uploadedImageUrl = response.data.data.url;
+      setImageUrl(uploadedImageUrl);
+      toast.success("Image uploaded successfully.");
+    } catch (error) {
+      toast.error("Failed to upload image. Please try again.");
+      console.error("Image upload error:", error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (password1.length < 6) {
+      toast.error("Password should be at least 6 characters long.");
+      return;
+    }
+
+    if (password1 !== password2) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_ROOT_URL}/student/registration/`,
+        {
+          name,
+          email,
+          password1,
+          password2,
+          level: className,
+          roll,
+          image_url: imageUrl,
+        }
+      );
+
+      if (res.status === 201) {
+        toast.success("Verification email sent.");
+        setTimeout(() => {
+          window.location.href = "/auth";
+        }, 700);
+      } else {
+        toast.error("Registration failed. Please try again.");
       }
-    };
+    } catch (error) {
+      toast.error("Registration failed. Please register with another email.");
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <div
       className={`form-container absolute top-0 translate-x-full w-1/2 h-full left-0 transition-transform duration-500 ease-in-out`}
     >
-      <form className="flex flex-col items-center justify-center h-full md:p-8 p-2 text-center">
-      <div className="flex items-center space-x-4 pt-10 pb-5">
+      <form
+        className="flex flex-col items-center justify-center h-full md:p-8 p-2 text-center"
+        onSubmit={handleSubmit}
+      >
+        <div className="flex items-center space-x-4 pt-10 pb-5">
           <Avatar>
-            <AvatarImage src={image || "/chatbot.png"} alt="Profile Image" />
-            <AvatarFallback>PI</AvatarFallback>
+            {imageUrl ? (
+              <AvatarImage src={imageUrl} alt="Student Avatar" />
+            ) : (
+              <AvatarFallback>U</AvatarFallback>
+            )}
           </Avatar>
           <Button variant="outline" size="sm" className="relative">
-            Change Image
+            {isUploading ? "Uploading..." : "Upload Image"}
             <input
               type="file"
               className="absolute inset-0 opacity-0 cursor-pointer"
@@ -39,17 +114,49 @@ const Student = () => {
           type="text"
           placeholder="Name"
           className="mb-4"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
-        <Input name="email" type="email" placeholder="Email" className="mb-4" />
+        <Input
+          name="email"
+          type="email"
+          placeholder="Email"
+          className="mb-4"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Input
           name="password"
           type="password"
           placeholder="Password"
           className="mb-4"
+          value={password1}
+          onChange={(e) => setPassword1(e.target.value)}
         />
-
-        <Input name="class" type="text" placeholder="class" className="mb-4" />
-        <Input name="roll" type="text" placeholder="roll" className="mb-4" />
+        <Input
+          name="password2"
+          type="password"
+          placeholder="Confirm Password"
+          className="mb-4"
+          value={password2}
+          onChange={(e) => setPassword2(e.target.value)}
+        />
+        <Input
+          name="class"
+          type="text"
+          placeholder="Class"
+          className="mb-4"
+          value={className}
+          onChange={(e) => setclassName(e.target.value)}
+        />
+        <Input
+          name="roll"
+          type="text"
+          placeholder="Roll"
+          className="mb-4"
+          value={roll}
+          onChange={(e) => setRoll(e.target.value)}
+        />
         <Button type="submit">Sign Up</Button>
       </form>
     </div>

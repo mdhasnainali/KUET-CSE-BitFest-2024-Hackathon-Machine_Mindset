@@ -1,3 +1,4 @@
+"use client";
 import {
   Sheet,
   SheetContent,
@@ -17,11 +18,27 @@ import {
 } from "react-icons/fa";
 import Profile from "@/components/profile/Profile";
 import { Theme } from "./ui/Theme";
+import { useEffect, useState } from "react";
 
-const Navbar = async () => {
-  const isLogin = true;
-  const isTeacher = false;
-  const isAdmin = true;
+const Navbar = () => {
+  const [isLogin, setIsLogin] = useState(false);
+  const [isTeacher, setIsTeacher] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user_data") || "{}");
+
+    if (user.access_token) {
+      setIsLogin(true);
+      if (user.role === "TEACHER") {
+        setIsTeacher(true);
+      } else if (user.role === "ADMIN") {
+        setIsAdmin(true);
+      }
+    }
+    console.log(user.role);
+  }, []);
+  console.log(isAdmin);
 
   return (
     <nav className="bg-white z-50 dark:bg-[#020817] bg-opacity-30 backdrop-blur sticky top-0 p-4 px-8">
@@ -35,7 +52,7 @@ const Navbar = async () => {
             <code>Shift</code>
           </span>
         </Link>
-        <ul className="md:flex space-x-6 hidden">
+        <ul className={`md:flex hidden space-x-6  `}>
           <li>
             <Link href="/">
               <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
@@ -162,7 +179,7 @@ const MobileNav = ({
             Menu
           </SheetTitle>
         </SheetHeader>
-        <ul className="space-y-4 mt-4">
+        <ul className={`space-y-4 mt-4 `}>
           <li>
             <Link href="/">
               <SheetTrigger>

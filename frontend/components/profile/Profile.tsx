@@ -7,13 +7,7 @@ import Avatarr from "./Avatarr";
 import EditProfile from "./EditProfile";
 import Logout from "./Logout";
 
-const Profile = ({
-  isTeacher,
-  isAdmin,
-}: {
-  isTeacher: any;
-  isAdmin: any;
-}) => {
+const Profile = ({ isTeacher, isAdmin }: { isTeacher: any; isAdmin: any }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -33,6 +27,7 @@ const Profile = ({
         <div></div>
         <div className="mt-6 gap-3 flex items-center justify-center">
           <EditProfile isTeacher={isTeacher} isAdmin={isAdmin} />
+
           <Logout />
         </div>
       </DropdownMenuContent>
