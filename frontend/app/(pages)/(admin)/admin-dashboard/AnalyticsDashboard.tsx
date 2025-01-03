@@ -71,7 +71,7 @@ const AnalyticsDashboard = () => {
                 <TableRow>
                   <TableHead>Created By</TableHead>
                   <TableHead>Pdf Name</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -79,10 +79,10 @@ const AnalyticsDashboard = () => {
                   <TableRow key={item.id}>
                     <TableCell>{item.user}</TableCell>
                     <TableCell>{item.name}</TableCell>
-                    <TableCell className="flex items-center space-x-2">
-                      <Button variant="destructive" size="sm">
-                        <AiFillDelete size={17} className="mr-1" />
-                        Delete
+                    <TableCell className="flex items-center justify-end space-x-2">
+                    <Button variant="destructive" size="sm">
+                        <AiFillDelete size={15} />
+                        <span className="md:flex hidden ml-1">Delete</span>
                       </Button>
                     </TableCell>
                   </TableRow>
