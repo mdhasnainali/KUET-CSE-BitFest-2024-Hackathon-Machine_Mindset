@@ -60,7 +60,9 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     # Apps
-    "main.apps.MainConfig",
+    "administrator.apps.AdministratorConfig",
+    "student.apps.StudentConfig",
+    "teacher.apps.TeacherConfig",
 ]
 
 MIDDLEWARE = [
@@ -203,7 +205,7 @@ SITE_ID = 1
 
 
 # ACCOUNT_ADAPTER = "all_auth_extended.all_auth_extended.AccountAdapter"
-# AUTH_USER_MODEL = "administrator.User"
+AUTH_USER_MODEL = "administrator.User"
 
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_AUTHENTICATION_METHOD = "email"
