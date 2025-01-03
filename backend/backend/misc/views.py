@@ -3,13 +3,16 @@ from teacher.models import Content
 # serializers
 from misc.serializers import SearchSerializer, ChatBotSerializer
 from teacher.serializers import (
-    ContentSerializer,    
+    ContentSerializer,
 )
 
 # for rest api
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Q
+
+# import utilities
+from misc.utils import contains_bangla_script, get_gemini_response
 
 
 class PublicContentView(APIView):
@@ -62,8 +65,13 @@ class ChatBotView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=400)
 
+        message = serializer.validated_data.get("message")
+        if contains_bangla_script(message):
+            response = get_gemini_response(message)
+            return Response(response)
+
         return Response(
             {
-                "message": "Hello! I am a ChatBot. I am here to help you. How can I help you today?"
+                "message": "Hello! I cant understand Banglish. Please write in Bangla.",
             }
         )

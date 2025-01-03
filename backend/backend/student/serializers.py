@@ -37,3 +37,9 @@ class StudentRegistrationSerializer(RegisterSerializer):
         )
         student.save()
         return user
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ["name", "roll", "level", "image_url"]        
