@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF</title>
+    <style>
+        body {
+            margin: 1rem;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .title {
+            text-decoration: underline;
+        }
+
+        .caption {
+            word-break: normal;
+            display: block;
+            min-width: 10rem;
+            width: 70%;
+            max-width: 30rem;
+            margin: auto;
+            font-size: 0.8rem;
+        }
+
+        .body {
+            margin: 1.5rem 3rem;
+            text-align: justify;
+        }
+
+        .date {
+            text-align: left;
+            margin: 0 3rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="title">
+        {{ title }}
+    </h1>
+
+    <div class="caption">
+        {{ caption }}
+    </div>
+
+    <div class="body">
+        {{ body }}
+    </div>
+
+    <div class="date">        
+        Published By: {{ author }} <br>
+        Updated at: {{ date }}
+    </div>
+
+</body>
+
+</html>

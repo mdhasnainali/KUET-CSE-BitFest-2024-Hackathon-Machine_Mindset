@@ -10,3 +10,12 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class Contribution(models.Model):
+    # The user who made the contribution.
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    banglish = models.TextField()
+    bangla = models.TextField()
+    added_at = models.DateTimeField(auto_now_add=True)
+    approved = models.BooleanField(default=False)
