@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReduxProvider } from "@/lib/redux/ReduxProvider";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+           <Navbar />
+           <main>{children}</main>
           </ThemeProvider>
         </ReduxProvider>
         <Toaster />
