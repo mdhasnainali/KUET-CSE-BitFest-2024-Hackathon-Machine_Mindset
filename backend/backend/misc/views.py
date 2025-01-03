@@ -1,9 +1,10 @@
-from teacher.models import Content
+from teacher.models import Content, Teacher
 
 # serializers
 from misc.serializers import SearchSerializer, ChatBotSerializer
 from teacher.serializers import (
     ContentSerializer,
+    ProfileSerializer,
 )
 
 # for rest api
@@ -51,12 +52,21 @@ class SearchContentView(APIView):
             return Response(serializer.errors, status=400)
 
         search_text = serializer.validated_data.get("search_text")
+
+        # content searching
         content = Content.objects.filter(
             Q(title__icontains=search_text) | Q(caption__icontains=search_text),
             public=True,
         )
-        serializer = ContentSerializer(content, many=True)
-        return Response(serializer.data)
+        content_serializer = ContentSerializer(content, many=True)
+
+        # teacher searching
+        teacher = Teacher.objects.filter(name__icontains=search_text)
+        teacher_serializer = ProfileSerializer(teacher, many=True)
+
+        return Response(
+            {"contents": content_serializer.data, "teachers": teacher_serializer.data}
+        )
 
 
 class ChatBotView(APIView):

@@ -25,6 +25,17 @@ class Content(models.Model):
     pdf_file = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     public = models.BooleanField(default=False)
+    FONT_CHOICES = [              
+        ("AdorNoirrit", "AdorNoirrit"),
+        ("AlinurNakkhatra", "AlinurNakkhatra"),
+        ("AlinurShowpnocari", "AlinurShowpnocari"),
+        ("Sankalpa", "Sankalpa"),
+        ("SirajeeSanjar", "SirajeeSanjar"),
+        ("SwarnaliOkkhor", "SwarnaliOkkhor"),
+    ]
+    font = models.CharField(
+        max_length=50, choices=FONT_CHOICES, default="Normal"
+    )
 
     def __str__(self) -> str:
         return self.title

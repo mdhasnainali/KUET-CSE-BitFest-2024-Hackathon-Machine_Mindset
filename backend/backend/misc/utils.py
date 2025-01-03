@@ -24,7 +24,7 @@ def get_gemini_response(message):
 
 
 # export to pdf with txt and return pdf file path
-def export_pdf(title, caption, body, date, author):
+def export_pdf(title, caption, body, date, author, font):
 
     pdf_content = render_to_string(
         "pdf_template.html",
@@ -34,8 +34,11 @@ def export_pdf(title, caption, body, date, author):
             "body": body,
             "date": date,
             "author": author,
+            "font_path": f"{font}",
         },
     )
+
+    print(pdf_content)
 
     # write pdf content to a file
     pdf_file_path = f"{uuid4()}.pdf"

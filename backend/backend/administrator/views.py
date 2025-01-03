@@ -90,7 +90,7 @@ class ContributionView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        contributions = Contribution.objects.filter(approved=False)
+        contributions = Contribution.objects.all()
         serializer = ContributionSerializer(contributions, many=True)
         return Response(serializer.data)
 
@@ -209,4 +209,20 @@ class TeacherListAPIView(APIView):
         return Response(
             {"message": "Teacher deleted Successfully"},
             status=status.HTTP_204_NO_CONTENT,
+        )
+
+
+class TrainLLMModelView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_admin:
+            return Response(
+                {"message": "You are not authorized to perform this action"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        return Response(
+            {"message": "Model training started"},
+            status=status.HTTP_200_OK,
         )

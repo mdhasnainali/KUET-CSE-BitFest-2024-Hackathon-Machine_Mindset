@@ -18,6 +18,7 @@ from misc.utils import (
 from django.utils import timezone
 import os
 
+
 class AuthenticateOnlyTeacher(BasePermission):
     def has_permission(self, request, view):
         if request.user and request.user.is_authenticated:
@@ -91,12 +92,13 @@ class ContentManagementView(APIView):
             title = title_caption.get("title")
             caption = title_caption.get("caption")
 
-            pdf_file_path = export_pdf(                
+            pdf_file_path = export_pdf(
                 title=title,
                 caption=caption,
                 body=bangla,
                 date=timezone.now(),
                 author=teacher.name,
+                font=f"{serializer.validated_data.get("font")}.ttf",
             )
             print("---------------- POST ---------------")
             print(title, caption, bangla)
@@ -110,6 +112,7 @@ class ContentManagementView(APIView):
                 bangla=bangla,
                 pdf_file=pdf_file_path,
                 public=serializer.validated_data.get("public"),
+                font=serializer.validated_data.get("font"),
             )
 
             return Response(ContentSerializer(content_obj).data, status=201)
@@ -117,9 +120,7 @@ class ContentManagementView(APIView):
 
     def put(self, request, content_id=None, *args, **kwargs):
         if not content_id:
-            return Response({
-                "message": "Content ID is required"
-            }, status=400)
+            return Response({"message": "Content ID is required"}, status=400)
 
         teacher = request.user.teacher
         content = teacher.content.get(id=content_id)
@@ -142,6 +143,7 @@ class ContentManagementView(APIView):
                     body=bangla,
                     date=timezone.now(),
                     author=teacher.name,
+                    font=f"{serializer.validated_data.get("font")}.ttf",
                 )
                 print("--------------- PUT -----------------")
                 print(title, caption, bangla)
@@ -153,6 +155,7 @@ class ContentManagementView(APIView):
                 content.bangla = bangla
                 content.pdf_file = pdf_file_path
                 content.public = public
+                content.font = serializer.validated_data.get("font")
                 content.save()
 
             else:
@@ -164,9 +167,7 @@ class ContentManagementView(APIView):
 
     def delete(self, request, content_id=None, *args, **kwargs):
         if not content_id:
-            return Response({
-                "message": "Content ID is required"
-            }, status=400)
+            return Response({"message": "Content ID is required"}, status=400)
 
         teacher = request.user.teacher
         content = teacher.content.get(id=content_id)
@@ -178,6 +179,4 @@ class ContentManagementView(APIView):
         if os.path.exists(filename):
             os.remove(filename)
 
-        return Response({
-            "message": "Content deleted successfully"
-        }, status=204)
+        return Response({"message": "Content deleted successfully"}, status=204)

@@ -40,11 +40,10 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
         fields = "__all__"
-        read_only_fields = ("teacher",)
+        read_only_fields = ("teacher", "id",)
 
 
-
-class ContentSerializer(serializers.ModelSerializer):
+class ContentSerializer(serializers.ModelSerializer):    
     class Meta:
         model = Content
         fields = "__all__"
@@ -57,4 +56,3 @@ class ContentSerializer(serializers.ModelSerializer):
         if instance.pdf_file:
             ret["pdf_file"] = f"http://localhost:3000/{instance.pdf_file}"
         return ret
-    
