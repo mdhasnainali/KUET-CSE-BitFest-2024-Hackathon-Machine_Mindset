@@ -18,30 +18,48 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { MetricValues } from "@/constant";
-import { Eye } from "lucide-react";
-import { useState } from "react";
-import { AiFillDelete } from "react-icons/ai";
+import { Eye, NotepadText } from "lucide-react";
 
-const pdfData = [
-  { id: 1, name: "Story_1.pdf", isPublic: true },
-  { id: 2, name: "Translation_2.pdf", isPublic: false },
-  { id: 3, name: "Chatbot_Transcript.pdf", isPublic: true },
-  { id: 3, name: "Chatbot_Transcript.pdf", isPublic: true },
-  { id: 3, name: "Chatbot_Transcript.pdf", isPublic: false },
-  { id: 3, name: "Chatbot_Transcript.pdf", isPublic: true },
-  { id: 3, name: "Chatbot_Transcript.pdf", isPublic: false },
-];
+import { useEffect, useState } from "react";
+import { AiFillDelete } from "react-icons/ai";
+import axios from "axios";
 
 const AnalyticsDashboard = () => {
-  const [pdfs, setPdfs] = useState(pdfData);
+  const [pdfs, setPdfs] = useState([]);
+  const userData = JSON.parse(localStorage.getItem("user_data") || "{}");
 
-  const togglePdfVisibility = (id: number) => {
-    setPdfs(
-      pdfs.map((pdf) =>
-        pdf.id === id ? { ...pdf, isPublic: !pdf.isPublic } : pdf
-      )
+
+  const updateData = async (id: number, data: any) => {
+    await axios.put(
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/teacher/content-management/${id}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${userData.access_token}`,
+        },
+      }
     );
+    fetchPdfData();
+  }
+
+
+  const fetchPdfData = async () => {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/teacher/content-management/`,
+      {
+        headers: {
+          Authorization: `Bearer ${userData.access_token}`,
+        },
+      });
+    console.log(res.data);
+    setPdfs(res.data);
   };
+
+  useEffect(() => {
+    fetchPdfData();
+  }, []);
+
+
 
   return (
     <div className="container mx-auto p-4">
@@ -81,26 +99,40 @@ const AnalyticsDashboard = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {pdfs.map((pdf) => (
+                {pdfs.map((pdf: any) => (
                   <TableRow key={pdf.id}>
                     <TableCell>
                       <div
                         className="truncate max-w-[150px] md:max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
-                        title={pdf.name}
+                        title={pdf["title"]}
                       >
-                        {pdf.name}
+                        {pdf["title"]}
                       </div>
                     </TableCell>
 
                     <TableCell>
                       <div className="flex items-center space-x-2">
                         <Switch
-                          checked={pdf.isPublic}
-                          onCheckedChange={() => togglePdfVisibility(pdf.id)}
+                          checked={pdf.public}
+                          onCheckedChange={() => {
+                            updateData(pdf.id, {
+                              ...pdf,
+                              public: !pdf.public,
+                            });
+                          }}
                         />
                       </div>
                     </TableCell>
                     <TableCell className="flex items-center justify-end space-x-3 text-right">
+                      <Button
+                        className="hover:bg-green-700 text-white bg-blue-600"
+                        size="sm"
+                      >
+                        <Eye size={15} />
+                        <span className="md:flex hidden ml-1">
+                          PDF
+                        </span>
+                      </Button>
                       <Button
                         className="bg-green-600 hover:bg-green-700 text-white "
                         size="sm"
@@ -108,7 +140,17 @@ const AnalyticsDashboard = () => {
                         <Eye size={15} />
                         <span className="md:flex hidden ml-1">view</span>
                       </Button>
-                      <Button variant="destructive" size="sm">
+                      <Button variant="destructive" size="sm" onClick={() => {
+                        axios.delete(
+                          `${process.env.NEXT_PUBLIC_ROOT_URL}/teacher/content-management/${pdf.id}`,
+                          {
+                            headers: {
+                              Authorization: `Bearer ${userData.access_token}`,
+                            },
+                          }
+                        );
+                        window.location.reload();
+                      }}>
                         <AiFillDelete size={15} />
                         <span className="md:flex hidden ml-1">Delete</span>
                       </Button>
