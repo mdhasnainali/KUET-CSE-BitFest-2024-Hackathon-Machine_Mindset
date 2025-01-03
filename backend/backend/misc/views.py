@@ -69,7 +69,9 @@ class ChatBotView(APIView):
         message = serializer.validated_data.get("message")
         if contains_bangla_script(message):
             response = get_gemini_response(message)
-            return Response(response)
+            return Response({
+                "message": response
+            })
 
         return Response(
             {
