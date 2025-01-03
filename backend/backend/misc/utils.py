@@ -38,8 +38,8 @@ def export_pdf(title, caption, body, date, author):
     )
 
     # write pdf content to a file
-    pdf_file_path = f"media/{uuid4()}.pdf"
-    HTML(string=pdf_content).write_pdf(pdf_file_path)
+    pdf_file_path = f"{uuid4()}.pdf"
+    HTML(string=pdf_content).write_pdf(f"media/{pdf_file_path}")
     return pdf_file_path
 
 
@@ -48,21 +48,22 @@ def generate_title_and_caption(message):
 
     new_message = (
         message
-        + '\n\nGenerate Bangla Title and Caption for this in JSON format. JSON format example: {"title": "টাইটেল", "caption": "ক্যাপশন"}'
+        + '\n\nGenerate Bangla Title and Caption for this in JSON format. JSON format example: {"title": "টাইটেল", "caption": "ক্যাপশন"}. Return this json in plain text format. No formatting required.'
     )
     request_body = {"contents": [{"parts": [{"text": new_message}]}]}
 
     response = requests.post(url, json=request_body)
-    json_response = json.loads(
-        response.json()["candidates"][0]["content"]["parts"][0]["text"]
-    )
+    response = response.json()["candidates"][0]["content"]["parts"][0]["text"]
+    print(response)
+    json_response = json.loads(response)
     return json_response
 
 
 # returns the translated text
 def process_text_with_llm_endpoint(text):
     response = requests.post(
-        f"{settings.LLM_API_ENDPOINT}/translate",
+        f"{settings.LLM_API_ENDPOINT}",
         json={"prompt": text},
     )
-    return response.json()["translation"]
+    print(response.json())
+    return response.json()["bangla_text"]

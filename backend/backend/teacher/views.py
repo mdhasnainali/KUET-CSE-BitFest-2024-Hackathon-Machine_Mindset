@@ -15,7 +15,8 @@ from misc.utils import (
     generate_title_and_caption,
     export_pdf,
 )
-
+from django.utils import timezone
+import os
 
 class AuthenticateOnlyTeacher(BasePermission):
     def has_permission(self, request, view):
@@ -90,14 +91,14 @@ class ContentManagementView(APIView):
             title = title_caption.get("title")
             caption = title_caption.get("caption")
 
-            pdf_file_path = export_pdf(
-                title,
-                caption,
-                bangla,
-                serializer.validated_data.get("created_at"),
-                teacher.name,
+            pdf_file_path = export_pdf(                
+                title=title,
+                caption=caption,
+                body=bangla,
+                date=timezone.now(),
+                author=teacher.name,
             )
-            print("-----------------------------------")
+            print("---------------- POST ---------------")
             print(title, caption, bangla)
             print("-----------------------------------")
 
@@ -116,22 +117,67 @@ class ContentManagementView(APIView):
 
     def put(self, request, content_id=None, *args, **kwargs):
         if not content_id:
-            return Response("Content ID is required", status=400)
+            return Response({
+                "message": "Content ID is required"
+            }, status=400)
 
         teacher = request.user.teacher
         content = teacher.content.get(id=content_id)
         serializer = ContentSerializer(content, data=request.data)
         if serializer.is_valid():
-            # TODO: update banglish to LLM FastAPI
-            # serializer.save()
+
+            banglish = serializer.validated_data.get("banglish")
+            public = serializer.validated_data.get("public")
+
+            if banglish != content.banglish:
+                # if banglish is changed, regenerate bangla, title, caption and pdf
+                bangla = process_text_with_llm_endpoint(banglish)
+                title_caption = generate_title_and_caption(banglish)
+                title = title_caption.get("title")
+                caption = title_caption.get("caption")
+
+                pdf_file_path = export_pdf(
+                    title=title,
+                    caption=caption,
+                    body=bangla,
+                    date=timezone.now(),
+                    author=teacher.name,
+                )
+                print("--------------- PUT -----------------")
+                print(title, caption, bangla)
+                print("-----------------------------------")
+
+                content.title = title
+                content.caption = caption
+                content.banglish = banglish
+                content.bangla = bangla
+                content.pdf_file = pdf_file_path
+                content.public = public
+                content.save()
+
+            else:
+                content.public = public
+                content.save()
+
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
 
     def delete(self, request, content_id=None, *args, **kwargs):
         if not content_id:
-            return Response("Content ID is required", status=400)
+            return Response({
+                "message": "Content ID is required"
+            }, status=400)
 
         teacher = request.user.teacher
         content = teacher.content.get(id=content_id)
+        filename = f"media/{content.pdf_file}"
+        print(filename)
         content.delete()
-        return Response(status=204)
+
+        # delete pdf file from disk
+        if os.path.exists(filename):
+            os.remove(filename)
+
+        return Response({
+            "message": "Content deleted successfully"
+        }, status=204)

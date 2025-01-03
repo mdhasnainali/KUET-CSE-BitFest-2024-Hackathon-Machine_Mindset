@@ -12,7 +12,11 @@ from rest_framework.response import Response
 from django.db.models import Q
 
 # import utilities
-from misc.utils import contains_bangla_script, get_gemini_response
+from misc.utils import (
+    contains_bangla_script,
+    get_gemini_response,
+    process_text_with_llm_endpoint,
+)
 
 
 class PublicContentView(APIView):
@@ -67,19 +71,31 @@ class ChatBotView(APIView):
             return Response(serializer.errors, status=400)
 
         message = serializer.validated_data.get("message")
+        msg_str = ""
 
         if serializer.validated_data.get("content_id"):
             content_id = serializer.validated_data.get("content_id")
             content = Content.objects.get(id=content_id)
-            msg_str = "Based on this Bangla content: \n\n```" + content.bangla + "```\n\n" + "Answer to this query: \n\n"
-            message = msg_str + message
+            msg_str = (
+                "Based on this Bangla content: \n\n```"
+                + content.bangla
+                + "```\n\n"
+                + "Answer to this query: \n\n"
+            )
 
         if contains_bangla_script(message):
-            response = get_gemini_response(message)
+            response = get_gemini_response(msg_str + message)
             return Response({"message": response})
 
+        else:
+            response = process_text_with_llm_endpoint(message)
+            print(response)
+            if response:
+                response = get_gemini_response(msg_str + response)
+                print(response)
+                return Response({"message": response})
+
         return Response(
-            {
-                "message": "Hello! I cant understand Banglish. Please write in Bangla.",
-            }
+            {"message": "Something went wrong, please try again with a valid query"},
+            status=400,
         )

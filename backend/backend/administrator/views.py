@@ -6,12 +6,16 @@ from rest_framework.permissions import IsAuthenticated
 
 # models
 from administrator.models import Contribution
+from student.models import Student
+from teacher.models import Teacher
 
 # serializers
 from administrator.serializers import (
     ContributionSerializer,
     ContributionApprovalSerializer,
 )
+from student.serializers import ProfileSerializer as StudentProfileSerializers
+from teacher.serializers import ProfileSerializer as TeacherProfileSerializer
 
 # for logging in
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -100,7 +104,9 @@ class ContributionView(APIView):
     def put(self, request, contribution_id, *args, **kwargs):
         if not request.user.is_admin:
             return Response(
-                "You are not authorized to perform this action",
+                {
+                    "message": "You are not authorized to perform this action",
+                },
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
@@ -116,17 +122,91 @@ class ContributionView(APIView):
     def delete(self, request, contribution_id=None, *args, **kwargs):
         if not contribution_id:
             return Response(
-                "Contribution ID is required", status=status.HTTP_400_BAD_REQUEST
+                {
+                    "message": "Contribution ID is required",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         if not request.user.is_admin:
             return Response(
-                "You are not authorized to perform this action",
+                {
+                    "message": "You are not authorized to perform this action",
+                },
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
         contribution = Contribution.objects.get(id=contribution_id)
         contribution.delete()
         return Response(
-            "Contribution deleted Successfully", status=status.HTTP_204_NO_CONTENT
+            {
+                "message": "Contribution deleted Successfully",
+            },
+            status=status.HTTP_204_NO_CONTENT,
+        )
+
+
+class StudentListAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        students = Student.objects.all()
+        serializer = StudentProfileSerializers(students, many=True)
+        return Response(serializer.data)
+
+    def delete(self, request, student_id=None, *args, **kwargs):
+        if not student_id:
+            return Response(
+                {
+                    "message": "Student ID is required",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if not request.user.is_admin:
+            return Response(
+                {
+                    "message": "You are not authorized to perform this action",
+                },
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        student = Student.objects.get(id=student_id)
+        student.delete()
+        return Response(
+            {
+                "message": "Student deleted Successfully",
+            },
+            status=status.HTTP_204_NO_CONTENT,
+        )
+
+
+class TeacherListAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        teachers = Teacher.objects.all()
+        serializer = TeacherProfileSerializer(teachers, many=True)
+        return Response(serializer.data)
+
+    def delete(self, request, teacher_id=None, *args, **kwargs):
+        if not teacher_id:
+            return Response(
+                {
+                    "message": "Teacher ID is required",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if not request.user.is_admin:
+            return Response(
+                {"message": "You are not authorized to perform this action"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        teacher = Teacher.objects.get(id=teacher_id)
+        teacher.delete()
+        return Response(
+            {"message": "Teacher deleted Successfully"},
+            status=status.HTTP_204_NO_CONTENT,
         )

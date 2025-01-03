@@ -42,4 +42,5 @@ class StudentRegistrationSerializer(RegisterSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ["name", "roll", "level", "image_url"]        
+        fields = ["name", "roll", "level", "image_url", "id"]
+        read_only_fields = ["id"]       
