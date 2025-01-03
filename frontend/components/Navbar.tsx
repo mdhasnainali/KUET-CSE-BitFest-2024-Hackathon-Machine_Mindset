@@ -20,7 +20,8 @@ import { Theme } from "./ui/Theme";
 
 const Navbar = async () => {
   const isLogin = true;
-  const isTeacher = false;
+  const isTeacher = true;
+  const isAdmin = false;
 
   return (
     <nav className="bg-white z-50 dark:bg-[#020817] bg-opacity-30 backdrop-blur sticky top-0 p-4 px-8">
@@ -42,13 +43,42 @@ const Navbar = async () => {
               </span>
             </Link>
           </li>
-          <li>
-            <Link href="/chatbot">
-              <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
-                Chatbot
-              </span>
-            </Link>
-          </li>
+          {isAdmin ? (
+            <>
+              <li>
+                <Link href="/admin-dashboard">
+                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
+                    Dashboard
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/finetune">
+                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
+                    Finetune
+                  </span>
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link href="/chatbot">
+                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
+                    Chatbot
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/contribute">
+                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
+                    Contribute
+                  </span>
+                </Link>
+              </li>
+            </>
+          )}
+
           {isTeacher && (
             <>
               <li>
@@ -67,19 +97,12 @@ const Navbar = async () => {
               </li>
             </>
           )}
-          <li>
-            <Link href="/contribute">
-              <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
-                Contribute
-              </span>
-            </Link>
-          </li>
         </ul>
         <div className="space-x-3 hidden md:flex items-center">
           <Theme />
           {isLogin ? (
             <>
-              <Profile isTeacher={isTeacher} />
+              <Profile isTeacher={isTeacher} isAdmin={isAdmin}/>
             </>
           ) : (
             <>
@@ -94,7 +117,11 @@ const Navbar = async () => {
         </div>
         {/* For mobile devices */}
         <div className="md:hidden block">
-          <MobileNav isLogin={isLogin} isTeacher={isTeacher} />
+          <MobileNav
+            isLogin={isLogin}
+            isTeacher={isTeacher}
+            isAdmin={isAdmin}
+          />
         </div>
       </div>
     </nav>
@@ -104,9 +131,11 @@ const Navbar = async () => {
 const MobileNav = ({
   isLogin,
   isTeacher,
+  isAdmin,
 }: {
   isLogin: any;
   isTeacher: any;
+  isAdmin: any;
 }) => {
   return (
     <Sheet>
@@ -144,16 +173,48 @@ const MobileNav = ({
               </SheetTrigger>
             </Link>
           </li>
-          <li>
-            <Link href="/chatbot">
-              <SheetTrigger>
-                <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
-                  <FaBlog className="mr-3" />
-                  Chatbot
-                </span>
-              </SheetTrigger>
-            </Link>
-          </li>
+          {isAdmin ? (
+            <>
+              <li>
+                <Link href="/admin-dashboard">
+                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
+                    Dashboard
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/finetune">
+                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
+                    Finetune
+                  </span>
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link href="/chatbot">
+                  <SheetTrigger>
+                    <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
+                      <FaBlog className="mr-3" />
+                      Chatbot
+                    </span>
+                  </SheetTrigger>
+                </Link>
+              </li>
+              <li>
+                <Link href="/contribute">
+                  <SheetTrigger>
+                    <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
+                      <FaEnvelope className="mr-3" />
+                      Contribute
+                    </span>
+                  </SheetTrigger>
+                </Link>
+              </li>
+            </>
+          )}
+
           {isTeacher && (
             <>
               <li>
@@ -176,22 +237,11 @@ const MobileNav = ({
               </li>
             </>
           )}
-
-          <li>
-            <Link href="/contribute">
-              <SheetTrigger>
-                <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
-                  <FaEnvelope className="mr-3" />
-                  Contribute
-                </span>
-              </SheetTrigger>
-            </Link>
-          </li>
         </ul>
         <div className="space-x-3 absolute left-2 bottom-2 flex items-center">
           {isLogin ? (
             <div className="dark:bg-gray-800 flex items-center space-x-2 dark:text-white p-4 rounded">
-              <Profile isTeacher={isTeacher} />
+              <Profile isTeacher={isTeacher} isAdmin={isAdmin}/>
               <span>Md Tofaal Ahmed</span>
             </div>
           ) : (

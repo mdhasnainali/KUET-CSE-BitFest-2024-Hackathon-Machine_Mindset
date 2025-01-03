@@ -12,7 +12,13 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 
-const EditProfile = ({ isTeacher }: { isTeacher: any }) => {
+const EditProfile = ({
+  isTeacher,
+  isAdmin,
+}: {
+  isTeacher: any;
+  isAdmin: any;
+}) => {
   const [image, setImage] = useState<string | null>(null);
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -63,42 +69,47 @@ const EditProfile = ({ isTeacher }: { isTeacher: any }) => {
             <Input id="name" placeholder="Your Name" className="mt-2" />
           </div>
 
-          {/* Subject */}
-          {isTeacher ? (
+          {!isAdmin && (
             <>
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium">
-                  Subject
-                </label>
-                <Input
-                  id="subject"
-                  placeholder="Your Subject"
-                  className="mt-2"
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              <div>
-                <label htmlFor="class" className="block text-sm font-medium">
-                  Class
-                </label>
-                <Input
-                  id="class"
-                  placeholder="Your class"
-                  className="mt-2"
-                />
-              </div>
-              <div>
-                <label htmlFor="Roll" className="block text-sm font-medium">
-                  Roll
-                </label>
-                <Input
-                  id="Roll"
-                  placeholder="Your roll"
-                  className="mt-2"
-                />
-              </div>
+              {isTeacher ? (
+                <>
+                  <div>
+                    <label
+                      htmlFor="subject"
+                      className="block text-sm font-medium"
+                    >
+                      Subject
+                    </label>
+                    <Input
+                      id="subject"
+                      placeholder="Your Subject"
+                      className="mt-2"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <label
+                      htmlFor="class"
+                      className="block text-sm font-medium"
+                    >
+                      Class
+                    </label>
+                    <Input
+                      id="class"
+                      placeholder="Your class"
+                      className="mt-2"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="Roll" className="block text-sm font-medium">
+                      Roll
+                    </label>
+                    <Input id="Roll" placeholder="Your roll" className="mt-2" />
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>

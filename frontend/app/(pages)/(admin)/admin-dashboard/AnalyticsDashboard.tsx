@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
 import {
   Table,
   TableBody,
@@ -17,39 +16,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { MetricValues } from "@/constant";
-import { Eye } from "lucide-react";
-import { useState } from "react";
+import { MetricValuesAdmin } from "@/constant";
 import { AiFillDelete } from "react-icons/ai";
 
 const pdfData = [
-  { id: 1, name: "Story_1.pdf", isPublic: true },
-  { id: 2, name: "Translation_2.pdf", isPublic: false },
-  { id: 3, name: "Chatbot_Transcript.pdf", isPublic: true },
-  { id: 3, name: "Chatbot_Transcript.pdf", isPublic: true },
-  { id: 3, name: "Chatbot_Transcript.pdf", isPublic: false },
-  { id: 3, name: "Chatbot_Transcript.pdf", isPublic: true },
-  { id: 3, name: "Chatbot_Transcript.pdf", isPublic: false },
+  { id: 1, name: "Story_1.pdf", isPublic: true, user: "Md tofaal Ahmed" },
+  {
+    id: 2,
+    name: "Translation_2.pdf",
+    isPublic: false,
+    user: "Md tofaal Ahmed",
+  },
+  { id: 1, name: "Story_1.pdf", isPublic: true, user: "Md tofaal Ahmed" },
+  {
+    id: 2,
+    name: "Translation_2.pdf",
+    isPublic: false,
+    user: "Md tofaal Ahmed",
+  },
 ];
 
 const AnalyticsDashboard = () => {
-  const [pdfs, setPdfs] = useState(pdfData);
-
-  const togglePdfVisibility = (id: number) => {
-    setPdfs(
-      pdfs.map((pdf) =>
-        pdf.id === id ? { ...pdf, isPublic: !pdf.isPublic } : pdf
-      )
-    );
-  };
-
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Analytics Dashboard</h1>
 
       <div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
-          {MetricValues.map((item) => (
+          {MetricValuesAdmin.map((item) => (
             <Card key={item.title}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -75,28 +69,17 @@ const AnalyticsDashboard = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>File Name</TableHead>
-                  <TableHead>Public Pdf</TableHead>
+                  <TableHead>Created By</TableHead>
+                  <TableHead>Pdf Name</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {pdfs.map((pdf) => (
-                  <TableRow key={pdf.id}>
-                    <TableCell>{pdf.name}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <Switch
-                          checked={pdf.isPublic}
-                          onCheckedChange={() => togglePdfVisibility(pdf.id)}
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell className="flex items-center space-x-3">
-                      <Button className="bg-green-600 hover:bg-green-700 text-white" size="sm">
-                        <Eye size={17} className="mr-1" />
-                        view
-                      </Button>
+                {pdfData.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.user}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell className="flex items-center space-x-2">
                       <Button variant="destructive" size="sm">
                         <AiFillDelete size={17} className="mr-1" />
                         Delete
