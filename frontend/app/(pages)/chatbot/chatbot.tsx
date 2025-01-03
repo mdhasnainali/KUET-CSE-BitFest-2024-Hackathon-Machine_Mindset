@@ -15,7 +15,7 @@ import Image from "next/image";
 
 const chatbot = () => {
   return (
-    <Card className="w-full mt-12 max-w-3xl mx-auto md:mb-16">
+    <Card className="w-full h-full  max-w-3xl mx-auto rounded-none md:border border-0">
       <CardHeader>
         <CardTitle className="text-[#1a87f8] flex items-center gap-2">
           <Image
@@ -27,8 +27,8 @@ const chatbot = () => {
           Chatbot
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <ScrollArea className="md:h-[500px] pr-8">
+      <CardContent className="flex-1">
+        <ScrollArea className="  flex-1">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -37,9 +37,9 @@ const chatbot = () => {
               }`}
             >
               <div
-                className={`inline-block p-2 rounded-lg ${
+                className={`inline-block min-w-sm p-2 rounded-lg ${
                   message.role === "user"
-                    ? "bg-[#091e3f] text-white"
+                    ? "bg-[#091e3f] text-white text-left"
                     : "bg-[#185d55] text-white"
                 }`}
               >
@@ -49,7 +49,7 @@ const chatbot = () => {
           ))}
         </ScrollArea>
       </CardContent>
-      <CardFooter className="p-0 px-6 pb-2">
+      <CardFooter className="sticky bottom-0 dark:bg-black bg-white ">
         <form className="flex w-full space-x-2">
           <Input
             placeholder="Type your message here..."
@@ -61,9 +61,9 @@ const chatbot = () => {
           </button>
         </form>
       </CardFooter>
-      <div className="text-xs hidden md:flex justify-center items-center  text-muted-foreground text-center text-wrap py-1">
+      {/* <div className="text-xs hidden md:flex justify-center items-center  text-muted-foreground text-center text-wrap py-1">
         Chatbots can make errors.
-      </div>
+      </div> */}
     </Card>
   );
 };

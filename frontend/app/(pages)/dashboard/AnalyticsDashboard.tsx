@@ -76,14 +76,22 @@ const AnalyticsDashboard = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>File Name</TableHead>
-                  <TableHead>Public Pdf</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>Public</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {pdfs.map((pdf) => (
                   <TableRow key={pdf.id}>
-                    <TableCell>{pdf.name}</TableCell>
+                    <TableCell>
+                      <div
+                        className="truncate max-w-[150px] md:max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap"
+                        title={pdf.name}
+                      >
+                        {pdf.name}
+                      </div>
+                    </TableCell>
+
                     <TableCell>
                       <div className="flex items-center space-x-2">
                         <Switch
@@ -92,14 +100,17 @@ const AnalyticsDashboard = () => {
                         />
                       </div>
                     </TableCell>
-                    <TableCell className="flex items-center space-x-3">
-                      <Button className="bg-green-600 hover:bg-green-700 text-white" size="sm">
-                        <Eye size={17} className="mr-1" />
-                        view
+                    <TableCell className="flex items-center justify-end space-x-3 text-right">
+                      <Button
+                        className="bg-green-600 hover:bg-green-700 text-white "
+                        size="sm"
+                      >
+                        <Eye size={15} />
+                        <span className="md:flex hidden ml-1">view</span>
                       </Button>
                       <Button variant="destructive" size="sm">
-                        <AiFillDelete size={17} className="mr-1" />
-                        Delete
+                        <AiFillDelete size={15} />
+                        <span className="md:flex hidden ml-1">Delete</span>
                       </Button>
                     </TableCell>
                   </TableRow>

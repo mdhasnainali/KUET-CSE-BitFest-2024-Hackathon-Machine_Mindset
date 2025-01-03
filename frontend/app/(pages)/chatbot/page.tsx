@@ -1,11 +1,13 @@
+"use client";
+
 import Chatbot from "./chatbot";
 
-const page = () => {
+const Page = () => {
   return (
-    <main className="flex h-[80vh] md:h-[87vh] container mx-auto  items-center justify-center bg-white dark:bg-[#020817] ">
+    <main className="flex items-center justify-center h- ">
       <Chatbot />
     </main>
   );
 };
 
-export default page;
+export default Page;

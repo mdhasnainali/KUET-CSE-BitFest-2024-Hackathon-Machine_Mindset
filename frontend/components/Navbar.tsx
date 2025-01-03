@@ -20,8 +20,8 @@ import { Theme } from "./ui/Theme";
 
 const Navbar = async () => {
   const isLogin = true;
-  const isTeacher = true;
-  const isAdmin = false;
+  const isTeacher = false;
+  const isAdmin = true;
 
   return (
     <nav className="bg-white z-50 dark:bg-[#020817] bg-opacity-30 backdrop-blur sticky top-0 p-4 px-8">
@@ -102,7 +102,7 @@ const Navbar = async () => {
           <Theme />
           {isLogin ? (
             <>
-              <Profile isTeacher={isTeacher} isAdmin={isAdmin}/>
+              <Profile isTeacher={isTeacher} isAdmin={isAdmin} />
             </>
           ) : (
             <>
@@ -177,16 +177,22 @@ const MobileNav = ({
             <>
               <li>
                 <Link href="/admin-dashboard">
-                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
-                    Dashboard
-                  </span>
+                  <SheetTrigger>
+                    <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
+                      <FaInfoCircle className="mr-3" />
+                      Dashboard
+                    </span>
+                  </SheetTrigger>
                 </Link>
               </li>
               <li>
                 <Link href="/finetune">
-                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
-                    Finetune
-                  </span>
+                  <SheetTrigger>
+                    <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
+                      <FaCogs className="mr-3" />
+                      Finetune
+                    </span>
+                  </SheetTrigger>
                 </Link>
               </li>
             </>
@@ -219,10 +225,12 @@ const MobileNav = ({
             <>
               <li>
                 <Link href="/dashboard">
-                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
-                    <FaInfoCircle className="mr-3" />
-                    Dashboard
-                  </span>
+                  <SheetTrigger>
+                    <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
+                      <FaInfoCircle className="mr-3" />
+                      Dashboard
+                    </span>
+                  </SheetTrigger>
                 </Link>
               </li>
               <li>
@@ -241,7 +249,7 @@ const MobileNav = ({
         <div className="space-x-3 absolute left-2 bottom-2 flex items-center">
           {isLogin ? (
             <div className="dark:bg-gray-800 flex items-center space-x-2 dark:text-white p-4 rounded">
-              <Profile isTeacher={isTeacher} isAdmin={isAdmin}/>
+              <Profile isTeacher={isTeacher} isAdmin={isAdmin} />
               <span>Md Tofaal Ahmed</span>
             </div>
           ) : (

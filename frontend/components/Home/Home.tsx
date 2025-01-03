@@ -7,15 +7,14 @@ import Search from "./Search";
 const Home = () => {
   return (
     <section className="bg-white dark:bg-[#020817]">
-      <main className="flex max-w-7xl mx-auto min-h-screen flex-col items-center justify-between p-24 ">
+      <main className="flex max-w-7xl mx-auto min-h-screen flex-col items-center justify-between  ">
         {/* Search Section */}
         <Search />
-
         {/* Cards Section */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 w-full">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 w-full px-3">
           {cardData.map((card) => (
             <Card key={card.id} className="w-full max-w-md mx-auto">
-              <CardContent className="p-6">
+              <CardContent className="p-3">
                 <div className="aspect-video relative mb-4">
                   <Image
                     src={card.image}

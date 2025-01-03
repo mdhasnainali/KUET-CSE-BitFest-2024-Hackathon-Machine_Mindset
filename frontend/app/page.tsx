@@ -1,11 +1,7 @@
 import Home from "@/components/Home/Home";
 
 const Page = () => {
-  return (
-
-      <Home />
-
-  );
+  return <Home />;
 };
 
 export default Page;

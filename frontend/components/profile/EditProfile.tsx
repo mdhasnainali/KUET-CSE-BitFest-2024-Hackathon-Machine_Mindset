@@ -1,4 +1,6 @@
 "use client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,8 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 
 const EditProfile = ({
@@ -32,7 +32,7 @@ const EditProfile = ({
   };
   return (
     <Dialog>
-      <DialogTrigger className="bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+      <DialogTrigger className="bg-primary text-primary-foreground shadow  h-9 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
         Edit Profile
       </DialogTrigger>
 
@@ -116,12 +116,12 @@ const EditProfile = ({
 
         {/* Save Button */}
         <div className="mt-4 flex justify-end space-x-2">
-          <Button variant="secondary" size="sm">
+          <DialogTrigger className=" shadow  h-9 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm  transition-colors  bg-slate-100 text-black border font-semibold">
             Cancel
-          </Button>
-          <Button variant="default" size="sm">
+          </DialogTrigger>
+          <DialogTrigger className=" shadow  h-9 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors  bg-black text-white border">
             Save Changes
-          </Button>
+          </DialogTrigger>
         </div>
       </DialogContent>
     </Dialog>

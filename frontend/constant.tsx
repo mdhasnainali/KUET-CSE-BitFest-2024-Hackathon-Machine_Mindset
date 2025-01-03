@@ -14,6 +14,10 @@ export const messages = [
   { role: "user", content: "Can you help me with coding?" },
   { role: "bot", content: "Of course! What do you need help with?" },
   { role: "user", content: "How do I create a React component?" },
+  { role: "bot", content: "Of course! What do you need help with?" },
+  { role: "user", content: "How do I create a React component?" },
+  { role: "bot", content: "Of course! What do you need help with?" },
+  { role: "user", content: "How do I create a React component?" },
   {
     role: "bot",
     content:

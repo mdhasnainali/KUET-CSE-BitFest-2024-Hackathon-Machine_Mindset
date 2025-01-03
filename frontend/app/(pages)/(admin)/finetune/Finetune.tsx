@@ -2,13 +2,12 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
@@ -21,8 +20,16 @@ const Finetune = () => {
   return (
     <div className="container mx-auto p-4">
       <div>
-        <Card className="shadow-lg relative">
-          <Button className="animate-shimmer absolute right-4 top-8  border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-4 font-medium text-slate-400 transition-colors ">
+        <Card className="shadow-lg ">
+          <CardHeader>
+            <CardTitle className="text-2xl text-center mb-4">
+              {" "}
+              Fine-Tune Requests
+            </CardTitle>
+            <CardDescription className="text-center text-gray-600 dark:text-gray-400">
+              Add or Remove data to improve the conversion
+            </CardDescription>
+            <Button className="animate-shimmer  border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-4 font-medium text-slate-400 transition-colors ">
             {" "}
             <Image
               width={20}
@@ -33,20 +40,11 @@ const Finetune = () => {
             />
             Fine Tune Models
           </Button>
-
-          <CardHeader>
-            <CardTitle className="text-2xl text-center mb-4">
-              {" "}
-              Fine-Tune Requests
-            </CardTitle>
-            <CardDescription className="text-center text-gray-600 dark:text-gray-400">
-              Add or Remove data to improve the conversion
-            </CardDescription>
           </CardHeader>
           <CardContent className="gap-4 grid grid-cols-1 ">
             {Array.from({ length: 10 }).map((_, i) => (
-              <>
-                <Card className="shadow-lg">
+              <div key={i}>
+                <Card  className="shadow-lg">
                   <CardHeader className="hidden">
                     <CardTitle className="text-2xl text-center mb-4">
                       Contributing Requests
@@ -60,20 +58,14 @@ const Finetune = () => {
                       <h3 className="text-lg font-semibold mb-2 text-blue-600 dark:text-blue-400">
                         Banglish
                       </h3>
-                      {/* <Textarea
-                          value={data.banglish}
-                          className="w-full "
-                        /> */}
+                      
                       <div className="w-full ">{data.banglish}</div>
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold mb-2 text-green-600 dark:text-green-400">
                         Bangla
                       </h3>
-                      {/* <Textarea
-                          value={data.bangla}
-                          className="w-full "
-                        /> */}
+                     
                       <div className="w-full ">{data.bangla}</div>
                     </div>
                   </CardContent>
@@ -84,7 +76,7 @@ const Finetune = () => {
                     </Button>
                   </CardFooter>
                 </Card>
-              </>
+              </div>
             ))}
           </CardContent>
           <CardFooter className="hidden"></CardFooter>
