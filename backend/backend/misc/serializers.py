@@ -6,4 +6,5 @@ class SearchSerializer(serializers.Serializer):
 
 
 class ChatBotSerializer(serializers.Serializer):
+    content_id = serializers.IntegerField(required=False)
     message = serializers.CharField(max_length=500, required=True)

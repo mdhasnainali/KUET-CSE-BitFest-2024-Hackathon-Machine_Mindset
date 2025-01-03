@@ -5,10 +5,16 @@ from teacher.serializers import (
     ProfileSerializer,
     ContentSerializer,
 )
+from teacher.models import Content
 
 # for rest api
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from misc.utils import (
+    process_text_with_llm_endpoint,
+    generate_title_and_caption,
+    export_pdf,
+)
 
 
 class AuthenticateOnlyTeacher(BasePermission):
@@ -68,15 +74,44 @@ class ContentManagementView(APIView):
         teacher = request.user.teacher
         content = teacher.content.all()
         serializer = ContentSerializer(content, many=True)
-        return Response(serializer.data)    
+        return Response(serializer.data)
 
-
+    # step 1: process banglish to bangla
+    # step 2: generate title and caption
+    # step 3: export to pdf
+    # step 4: save to db
     def post(self, request, *args, **kwargs):
         teacher = request.user.teacher
         serializer = ContentSerializer(data=request.data)
         if serializer.is_valid():
-            # TODO: post banglish to LLM FastAPI
-            return Response(serializer.data)
+            banglish = serializer.validated_data.get("banglish")
+            bangla = process_text_with_llm_endpoint(banglish)
+            title_caption = generate_title_and_caption(banglish)
+            title = title_caption.get("title")
+            caption = title_caption.get("caption")
+
+            pdf_file_path = export_pdf(
+                title,
+                caption,
+                bangla,
+                serializer.validated_data.get("created_at"),
+                teacher.name,
+            )
+            print("-----------------------------------")
+            print(title, caption, bangla)
+            print("-----------------------------------")
+
+            content_obj = Content.objects.create(
+                teacher=teacher,
+                title=title,
+                caption=caption,
+                banglish=banglish,
+                bangla=bangla,
+                pdf_file=pdf_file_path,
+                public=serializer.validated_data.get("public"),
+            )
+
+            return Response(ContentSerializer(content_obj).data, status=201)
         return Response(serializer.errors, status=400)
 
     def put(self, request, content_id=None, *args, **kwargs):

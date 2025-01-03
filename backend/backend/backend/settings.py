@@ -234,3 +234,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # env variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+LLM_API_ENDPOINT = os.getenv("LLM_API_ENDPOINT")

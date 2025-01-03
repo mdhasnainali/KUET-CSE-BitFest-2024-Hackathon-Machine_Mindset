@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from uuid import uuid4
 import json
 
+
 def contains_bangla_script(text):
     # Bangla Unicode range: U+0980 - U+09FF
     bangla_pattern = re.compile(r"[\u0980-\u09FF]")
@@ -52,5 +53,16 @@ def generate_title_and_caption(message):
     request_body = {"contents": [{"parts": [{"text": new_message}]}]}
 
     response = requests.post(url, json=request_body)
-    json_response = json.loads(response.json()["candidates"][0]["content"]["parts"][0]["text"])
+    json_response = json.loads(
+        response.json()["candidates"][0]["content"]["parts"][0]["text"]
+    )
     return json_response
+
+
+# returns the translated text
+def process_text_with_llm_endpoint(text):
+    response = requests.post(
+        f"{settings.LLM_API_ENDPOINT}/translate",
+        json={"prompt": text},
+    )
+    return response.json()["translation"]
