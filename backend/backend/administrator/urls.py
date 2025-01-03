@@ -4,6 +4,7 @@ from administrator.views import (
     StudentListAPIView,
     TeacherListAPIView,
     TrainLLMModelView,
+    AnalyticsView,
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path("teachers/", TeacherListAPIView.as_view(), name="teacher"),
     path("teachers/<int:teacher_id>", TeacherListAPIView.as_view(), name="teacher"),
     path("train_llm_model/", TrainLLMModelView.as_view(), name="train_llm_model"),
+    path("analytics/", AnalyticsView.as_view(), name="analytics"),
 ]

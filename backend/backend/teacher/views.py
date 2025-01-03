@@ -5,7 +5,7 @@ from teacher.serializers import (
     ProfileSerializer,
     ContentSerializer,
 )
-from teacher.models import Content
+from teacher.models import Content, Teacher
 
 # for rest api
 from rest_framework.views import APIView
@@ -14,9 +14,12 @@ from misc.utils import (
     process_text_with_llm_endpoint,
     generate_title_and_caption,
     export_pdf,
+    gpt_banglish_correction,
 )
 from django.utils import timezone
+from django.db.models import Func, Value
 import os
+from django.db.models import F, Sum
 
 
 class AuthenticateOnlyTeacher(BasePermission):
@@ -43,7 +46,7 @@ class ProfileView(APIView):
     serializer_class = ProfileSerializer
 
     def get(self, request, *args, **kwargs):
-        teacher = request.user.teacher
+        teacher = Teacher.objects.get(teacher=request.user)
         serializer = ProfileSerializer(teacher)
         return Response(serializer.data)
 
@@ -78,7 +81,7 @@ class ContentManagementView(APIView):
         serializer = ContentSerializer(content, many=True)
         return Response(serializer.data)
 
-    # step 1: process banglish to bangla
+    # step 1: process banglish to bangla and correct
     # step 2: generate title and caption
     # step 3: export to pdf
     # step 4: save to db
@@ -87,7 +90,8 @@ class ContentManagementView(APIView):
         serializer = ContentSerializer(data=request.data)
         if serializer.is_valid():
             banglish = serializer.validated_data.get("banglish")
-            bangla = process_text_with_llm_endpoint(banglish)
+            corrected_banglish = gpt_banglish_correction(banglish)
+            bangla = process_text_with_llm_endpoint(corrected_banglish)
             title_caption = generate_title_and_caption(banglish)
             title = title_caption.get("title")
             caption = title_caption.get("caption")
@@ -132,7 +136,9 @@ class ContentManagementView(APIView):
 
             if banglish != content.banglish:
                 # if banglish is changed, regenerate bangla, title, caption and pdf
-                bangla = process_text_with_llm_endpoint(banglish)
+                
+                corrected_banglish = gpt_banglish_correction(banglish)
+                bangla = process_text_with_llm_endpoint(corrected_banglish)                
                 title_caption = generate_title_and_caption(banglish)
                 title = title_caption.get("title")
                 caption = title_caption.get("caption")
@@ -180,3 +186,40 @@ class ContentManagementView(APIView):
             os.remove(filename)
 
         return Response({"message": "Content deleted successfully"}, status=204)
+
+
+class WordCount(Func):
+    function = "LENGTH"
+    template = (
+        "(LENGTH(%(expressions)s) - LENGTH(REPLACE(%(expressions)s, ' ', '')) + 1)"
+    )
+
+
+class AnalyticsView(APIView):
+    """
+    Get analytics data for teacher
+    """
+
+    permission_classes = [AuthenticateOnlyTeacher]
+
+    def get(self, request, *args, **kwargs):
+        teacher = request.user.teacher
+
+        content = teacher.content.all()
+        total = content.count()
+
+        total_words = teacher.content.aggregate(
+            total_words=Sum(WordCount(F("banglish")))
+        )
+
+        public = content.filter(public=True).count()
+        private = content.filter(public=False).count()
+
+        return Response(
+            {
+                "total_words": total_words.get("total_words"),
+                "stories_written": total,
+                "public": public,
+                "private": private,
+            }
+        )

@@ -23,6 +23,27 @@ def get_gemini_response(message):
     return response.json()["candidates"][0]["content"]["parts"][0]["text"]
 
 
+def gpt_banglish_correction(message):
+    url = f"https://api.openai.com/v1/chat/completions"
+
+    prompt = "Correct the following Banglish text and provide the corrected Banglish text. Banglish text: "
+    prompt += message
+    prompt += "\nOnly provide the corrected Banglish text. No other information is required."
+
+    request_body = {
+        "model": "gpt-4-turbo",
+        "messages": [{"role": "user", "content": [{"type": "text", "text": prompt}]}],
+        "max_tokens": 500,
+    }
+
+    response = requests.post(url, json=request_body, 
+        headers={"Authorization": f"Bearer {settings.OPENAI_API_KEYs}"}
+    )
+
+    print(response.json())
+    return response.json()["choices"][0]["message"]["content"]
+
+
 # export to pdf with txt and return pdf file path
 def export_pdf(title, caption, body, date, author, font):
 

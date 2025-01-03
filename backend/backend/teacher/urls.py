@@ -1,5 +1,5 @@
 from django.urls import path
-from teacher.views import TeacherRegistrationView, ProfileView, ContentManagementView
+from teacher.views import TeacherRegistrationView, ProfileView, ContentManagementView, AnalyticsView
 
 urlpatterns = [
     path(
@@ -21,5 +21,10 @@ urlpatterns = [
         "content-management/<int:content_id>",
         ContentManagementView.as_view(),
         name="content_management",
+    ),
+    path(
+        "analytics/",
+        AnalyticsView.as_view(),
+        name="analytics",
     ),
 ]

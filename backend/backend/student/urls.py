@@ -12,4 +12,5 @@ urlpatterns = [
         ProfileView.as_view(),
         name="profile_student",
     ),
+    
 ]

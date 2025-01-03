@@ -8,7 +8,7 @@ from misc.utils import train_llm_model
 # models
 from administrator.models import Contribution
 from student.models import Student
-from teacher.models import Teacher
+from teacher.models import Teacher, Content
 
 # serializers
 from administrator.serializers import (
@@ -60,9 +60,15 @@ class LoginWthPermission(APIView):
             "role": (
                 "TEACHER"
                 if user.is_teacher
-                else ("STUDENT" if user.is_student else "ADMIN",)
+                else "STUDENT" if user.is_student else "ADMIN"
             ),
         }
+
+        if user.is_student:
+            response_data["image"] = user.student.image_url
+        
+        if user.is_teacher:
+            response_data["image"] = user.teacher.image_url
 
         return Response(response_data, status=status.HTTP_200_OK)
 
@@ -100,24 +106,6 @@ class ContributionView(APIView):
         if serializer.is_valid():
             Contribution.objects.create(**serializer.data, user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def put(self, request, contribution_id, *args, **kwargs):
-        if not request.user.is_admin:
-            return Response(
-                {
-                    "message": "You are not authorized to perform this action",
-                },
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-
-        contribution = Contribution.objects.get(id=contribution_id)
-        serializer = ContributionApprovalSerializer(data=request.data)
-        if serializer.is_valid():
-            contribution.approved = serializer.data["approved"]
-            contribution.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, contribution_id=None, *args, **kwargs):
@@ -218,10 +206,10 @@ class TrainLLMModelView(APIView):
     This view is used to train the LLM model.
     step 1: Get all the approved contributions.
     step 2: Serialize the data and delete the instances.
-    step 3: POST the serialized data to the LLM API.    
+    step 3: POST the serialized data to the LLM API.
     """
 
-    permission_classes = [IsAuthenticated]    
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_admin:
@@ -229,19 +217,47 @@ class TrainLLMModelView(APIView):
                 {"message": "You are not authorized to perform this action"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        
+
         # json serialization for training the model
-        instances = Contribution.objects.filter(approved=True)
+        instances = Contribution.objects.all()
         array_obj = []
-        for instance in instances:            
-            array_obj.append({
-                "rm": instance.banglish,
-                "bn": instance.bangla,
-            })            
+        for instance in instances:
+            array_obj.append(
+                {
+                    "rm": instance.banglish,
+                    "bn": instance.bangla,
+                }
+            )
             instance.delete()
 
         # POST the data to the LLM API
         response = train_llm_model(array_obj)
+
+        return Response(
+            response,
+            status=status.HTTP_200_OK,
+        )
+
+
+class AnalyticsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_admin:
+            return Response(
+                {"message": "You are not authorized to perform this action"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        students = Student.objects.all()
+        teachers = Teacher.objects.all()
+        pdfs = Content.objects.all().count()
+
+        response = {
+            "students": students.count(),
+            "teachers": teachers.count(),
+            "total_pdfs": pdfs,
+        }
 
         return Response(
             response,

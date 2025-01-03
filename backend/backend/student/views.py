@@ -7,8 +7,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
-
-
 class AuthenticateOnlyStudent(BasePermission):
     def has_permission(self, request, view):
         if request.user and request.user.is_authenticated:
@@ -18,6 +16,7 @@ class AuthenticateOnlyStudent(BasePermission):
                 return False
 
         return False
+
 
 class StudentRegistrationView(RegisterView):
     serializer_class = StudentRegistrationSerializer
