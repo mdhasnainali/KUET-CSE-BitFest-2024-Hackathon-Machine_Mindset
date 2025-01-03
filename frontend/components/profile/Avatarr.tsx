@@ -6,7 +6,7 @@ const Avatarr = () => {
     <Avatar>
       <AvatarImage src={"/public.png"} />
       <AvatarFallback>
-        <Image width={80} height={80} src="/public.png" alt="" />
+        <Image width={80} height={80} src="/chatbot.png" alt="" />
       </AvatarFallback>
     </Avatar>
   );

@@ -7,7 +7,7 @@ import { useState } from "react";
 const PagesManifestPlugin = () => {
   const [isRightPanelActive, setRightPanelActive] = useState(false);
   return (
-    <div className="mt-5 mb-[5rem]  mx-2 flex flex-col items-center justify-center ">
+    <div className="  mx-2 flex flex-col items-center pt-28  bg-white dark:bg-[#020817] h-screen">
       <div className="container relative border  rounded-lg shadow-lg w-[768px] max-w-full min-h-[400px]   md:min-h-[480px] overflow-hidden">
         <SignIn />
         <SignUp isRightPanelActive={isRightPanelActive} />

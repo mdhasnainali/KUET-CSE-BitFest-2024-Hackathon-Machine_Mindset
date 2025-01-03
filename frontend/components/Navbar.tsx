@@ -12,17 +12,17 @@ import Profile from "@/components/profile/Profile";
 import { Theme } from "./ui/Theme";
 
 const Navbar = async () => {
-  const isLogin = false;
+  const isLogin = true;
 
   return (
-    <nav className="bg-white z-50 dark:bg-[#020817] bg-opacity-30 backdrop-blur sticky top-0 p-4 ">
+    <nav className="bg-white z-50 dark:bg-[#020817] bg-opacity-30 backdrop-blur sticky top-0 p-4 px-8">
       <div className="container mx-auto flex justify-between items-center">
         <Link
           href={"/"}
           className="text-black dark:text-white text-2xl font-bold flex items-center "
         >
           <span className="transition-opacity duration-300 ease-in-out hover:opacity-75">
-            <code className="text-[#1a87f8]">Bangla</code>
+            <code className="text-teal-500">Bangla</code>
             <code>Shift</code>
           </span>
         </Link>
@@ -42,7 +42,7 @@ const Navbar = async () => {
             </Link>
           </li>
           <li>
-            <Link href="/about">
+            <Link href="/dashboard">
               <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
                 Dashboard
               </span>
@@ -137,7 +137,7 @@ const MobileNav = ({ isLogin }: { isLogin: any }) => {
             </Link>
           </li>
           <li>
-            <Link href="/about">
+            <Link href="/dashboard">
               <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
                   <FaInfoCircle className="mr-3" />
                   Dashboard
