@@ -2,6 +2,16 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+
+# models
+from administrator.models import Contribution
+
+# serializers
+from administrator.serializers import (
+    ContributionSerializer,
+    ContributionApprovalSerializer,
+)
 
 # for logging in
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -12,8 +22,6 @@ from allauth.account.views import ConfirmEmailView
 from allauth.account.models import EmailConfirmationHMAC, EmailConfirmation
 from django.shortcuts import redirect
 from django.http import HttpResponse
-
-
 
 
 class LoginWthPermission(APIView):
@@ -72,3 +80,53 @@ class CustomConfirmEmailView(ConfirmEmailView):
             return redirect("https://petconnect-1-26xc.onrender.com/confirmation-email")
         else:
             return HttpResponse("Invalid or expired token", status=400)
+
+
+class ContributionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        contributions = Contribution.objects.filter(approved=False)
+        serializer = ContributionSerializer(contributions, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = ContributionSerializer(data=request.data)
+        if serializer.is_valid():
+            Contribution.objects.create(**serializer.data, user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, contribution_id, *args, **kwargs):
+        if not request.user.is_admin:
+            return Response(
+                "You are not authorized to perform this action",
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        contribution = Contribution.objects.get(id=contribution_id)
+        serializer = ContributionApprovalSerializer(data=request.data)
+        if serializer.is_valid():
+            contribution.approved = serializer.data["approved"]
+            contribution.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, contribution_id=None, *args, **kwargs):
+        if not contribution_id:
+            return Response(
+                "Contribution ID is required", status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not request.user.is_admin:
+            return Response(
+                "You are not authorized to perform this action",
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        contribution = Contribution.objects.get(id=contribution_id)
+        contribution.delete()
+        return Response(
+            "Contribution deleted Successfully", status=status.HTTP_204_NO_CONTENT
+        )

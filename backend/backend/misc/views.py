@@ -38,7 +38,7 @@ class PublicContentView(APIView):
 
 class SearchContentView(APIView):
     """
-    Search Content
+    Search in title and caption
     """
 
     def post(self, request, *args, **kwargs):
@@ -48,7 +48,7 @@ class SearchContentView(APIView):
 
         search_text = serializer.validated_data.get("search_text")
         content = Content.objects.filter(
-            Q(title__icontains=search_text) | Q(description__icontains=search_text),
+            Q(title__icontains=search_text) | Q(caption__icontains=search_text),
             public=True,
         )
         serializer = ContentSerializer(content, many=True)
@@ -57,7 +57,8 @@ class SearchContentView(APIView):
 
 class ChatBotView(APIView):
     """
-    ChatBot
+    ChatBot, Bangla text directly interacts with Gemini,
+    Banglish text goes to LLM API for translation, then to Gemini
     """
 
     def post(self, request, *args, **kwargs):

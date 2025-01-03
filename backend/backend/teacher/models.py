@@ -22,7 +22,7 @@ class Content(models.Model):
     caption = models.CharField(max_length=500, blank=True, null=True)
     banglish = models.TextField()
     bangla = models.TextField(blank=True, null=True)
-    pdf_file = models.FileField(upload_to="pdfs/", blank=True, null=True)
+    pdf_file = models.FileField(upload_to="media/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     public = models.BooleanField(default=False)
 

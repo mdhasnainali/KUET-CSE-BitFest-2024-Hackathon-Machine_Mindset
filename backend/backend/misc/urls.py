@@ -15,11 +15,11 @@ urlpatterns = [
     path(
         "search/",
         SearchContentView.as_view(),
-        name="registration_student",
+        name="search",
     ),
     path(
         "chatbot/",
         ChatBotView.as_view(),
-        name="registration_student",
+        name="search",
     ),
 ]
