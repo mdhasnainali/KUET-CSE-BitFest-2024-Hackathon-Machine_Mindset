@@ -65,8 +65,16 @@ def generate_title_and_caption(message):
 # returns the translated text
 def process_text_with_llm_endpoint(text):
     response = requests.post(
-        f"{settings.LLM_API_ENDPOINT}",
+        f"{settings.LLM_API_ENDPOINT}translate/",
         json={"prompt": text},
     )
     print(response.json())
     return response.json()["bangla_text"]
+
+
+def train_llm_model(json_data):
+    response = requests.post(
+        f"{settings.LLM_API_ENDPOINT}retrain/",
+        json=json_data,
+    )
+    return response.json()

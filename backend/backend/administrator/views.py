@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from misc.utils import train_llm_model
 
 # models
 from administrator.models import Contribution
@@ -213,7 +214,14 @@ class TeacherListAPIView(APIView):
 
 
 class TrainLLMModelView(APIView):
-    permission_classes = [IsAuthenticated]
+    """
+    This view is used to train the LLM model.
+    step 1: Get all the approved contributions.
+    step 2: Serialize the data and delete the instances.
+    step 3: POST the serialized data to the LLM API.    
+    """
+
+    permission_classes = [IsAuthenticated]    
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_admin:
@@ -221,8 +229,21 @@ class TrainLLMModelView(APIView):
                 {"message": "You are not authorized to perform this action"},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
+        
+        # json serialization for training the model
+        instances = Contribution.objects.filter(approved=True)
+        array_obj = []
+        for instance in instances:            
+            array_obj.append({
+                "rm": instance.banglish,
+                "bn": instance.bangla,
+            })            
+            instance.delete()
+
+        # POST the data to the LLM API
+        response = train_llm_model(array_obj)
 
         return Response(
-            {"message": "Model training started"},
+            response,
             status=status.HTTP_200_OK,
         )

@@ -36,6 +36,13 @@ class PublicContentView(APIView):
                 return Response(serializer.data)
             return Response({"error": "Content is private"}, status=404)
 
+        # check if teacher_id is provided in the param
+        if request.query_params.get("teacher_id"):
+            teacher_id = int(request.query_params.get("teacher_id"))
+            content = Content.objects.filter(teacher__id=teacher_id, public=True)
+            serializer = ContentSerializer(content, many=True)
+            return Response(serializer.data)
+
         content = Content.objects.filter(public=True)
         serializer = ContentSerializer(content, many=True)
         return Response(serializer.data)
@@ -109,3 +116,19 @@ class ChatBotView(APIView):
             {"message": "Something went wrong, please try again with a valid query"},
             status=400,
         )
+
+
+class AllTeachersView(APIView):
+    """
+    Get all teachers
+    """
+
+    def get(self, request, teacher_id=None, *args, **kwargs):
+        if teacher_id:
+            teacher = Teacher.objects.get(id=teacher_id)
+            serializer = ProfileSerializer(teacher)
+            return Response(serializer.data)
+
+        teachers = Teacher.objects.all()
+        serializer = ProfileSerializer(teachers, many=True)
+        return Response(serializer.data)

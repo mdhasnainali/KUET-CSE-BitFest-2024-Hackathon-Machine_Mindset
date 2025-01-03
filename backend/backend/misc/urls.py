@@ -1,5 +1,10 @@
 from django.urls import path
-from misc.views import PublicContentView, SearchContentView, ChatBotView
+from misc.views import (
+    PublicContentView,
+    SearchContentView,
+    ChatBotView,
+    AllTeachersView,
+)
 
 urlpatterns = [
     path(
@@ -21,5 +26,15 @@ urlpatterns = [
         "chatbot/",
         ChatBotView.as_view(),
         name="search",
+    ),
+    path(
+        "all-teachers/",
+        AllTeachersView.as_view(),
+        name="all_teachers",
+    ),
+    path(
+        "all-teachers/<int:teacher_id>/",
+        AllTeachersView.as_view(),
+        name="all_teachers",
     ),
 ]
