@@ -103,13 +103,13 @@ Get Profile
 
 Method: GET
 
-URL: `{{baseURL}}/teacher/profile/`
+URL: `/teacher/profile/`
 
 Update Profile
 
 Method: PUT
 
-URL: `{{baseURL}}/teacher/profile/`
+URL: `/teacher/profile/`
 
 body:
 ```
@@ -125,7 +125,7 @@ body:
 
 Method: POST
 
-URL: `{{baseURL}}/teacher/content-management/`
+URL: `/teacher/content-management/`
 
 ```
 {
@@ -139,19 +139,19 @@ URL: `{{baseURL}}/teacher/content-management/`
 
 Method: GET
 
-URL: `{{baseURL}}/teacher/content-management/`
+URL: `/teacher/content-management/`
 
 **4. Get Single Content**
 
 Method: GET
 
-URL: `{{baseURL}}/teacher/content-management/?content_id=7`
+URL: `/teacher/content-management/?content_id=7`
 
 **4. Update Content**
 
 Method: PUT
 
-URL: `{{baseURL}}/teacher/content-management/7`
+URL: `/teacher/content-management/7`
 
 ```
 {
@@ -165,20 +165,20 @@ URL: `{{baseURL}}/teacher/content-management/7`
 
 Method: DELETE
 
-URL: `{{baseURL}}/teacher/content-management/6`
+URL: `/teacher/content-management/6`
 
 **6. Analytics**
 
 Method: GET
 
-URL: `{{baseURL}}/teacher/analytics/`
+URL: `/teacher/analytics/`
 
 
 **8. Registration**
 
 Method: POST
 
-URL: `{{baseURL}}/teacher/registration/`
+URL: `/teacher/registration/`
 
 ```
 {
@@ -199,13 +199,13 @@ URL: `{{baseURL}}/teacher/registration/`
 
 Method: GET
 
-URL: `{{baseURL}}/student/profile/`
+URL: `/student/profile/`
 
 **2. Update Profile**
 
 Method: PUT
 
-URL: `{{baseURL}}/student/profile/`
+URL: `/student/profile/`
 
 ```
 {
@@ -221,7 +221,7 @@ URL: `{{baseURL}}/student/profile/`
 
 Method: POST
 
-URL: `{{baseURL}}/student/registration/`
+URL: `/student/registration/`
 
 ```
 {
@@ -241,13 +241,13 @@ URL: `{{baseURL}}/student/registration/`
 
 Method: GET
 
-URL: `{{baseURL}}/misc/contents/`
+URL: `/misc/contents/`
 
 **2. Search**
 
 Method: POST
 
-URL: `{{baseURL}}/misc/search/`
+URL: `/misc/search/`
 
 ```
 {
@@ -261,7 +261,7 @@ URL: `{{baseURL}}/misc/search/`
 
 Method: POST
 
-URL: `{{baseURL}}/misc/chatbot/`
+URL: `/misc/chatbot/`
 
 ```
 {
@@ -273,7 +273,7 @@ URL: `{{baseURL}}/misc/chatbot/`
 
 Method: POST
 
-URL: `{{baseURL}}/misc/chatbot/`
+URL: `/misc/chatbot/`
 
 ```
 {
@@ -289,7 +289,7 @@ URL: `{{baseURL}}/misc/chatbot/`
 
 Method: POST
 
-URL: `{{baseURL}}/administrator/contribution/`
+URL: `/administrator/contribution/`
 
 ```
 {
@@ -303,37 +303,45 @@ URL: `{{baseURL}}/administrator/contribution/`
 
 Method: GET
 
-URL: `{{baseURL}}/administrator/contribution/`
+URL: `/administrator/contribution/`
 
 **3. Remove Contribution**
 
 Method: DELETE
 
-URL: `{{baseURL}}/administrator/contribution/7`
+URL: `/administrator/contribution/7`
 
 
 **4. Train LLM Model**
 
 Method: POST
 
-URL: `{{baseURL}}/administrator/train_llm_model/`
+URL: `/administrator/train_llm_model/`
 
 **5. Analytics**
 
 Method: GET
 
-URL: `{{baseURL}}/administrator/analytics/`
+URL: `/administrator/analytics/`
 
 
 **6. Get All Students**
 
 Method: GET
 
-URL: `{{baseURL}}/administrator/students/`
+URL: `/administrator/students/`
 
 **7. Get All Teachers**
 
 Method: GET
 
-URL: `{{baseURL}}/administrator/teachers/`
+URL: `/administrator/teachers/`
+
+
+
+## AI Model Training Metrics
+
+![alt text](<images/Screenshot 2025-01-04 at 7.57.33 AM.png>)
+
+![alt text](<images/Screenshot 2025-01-04 at 7.57.54 AM.png>)
 
