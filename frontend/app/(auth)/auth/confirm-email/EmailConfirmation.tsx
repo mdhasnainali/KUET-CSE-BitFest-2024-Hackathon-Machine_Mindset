@@ -13,7 +13,7 @@ const EmailConfirmation = () => {
         <h1 className="text-2xl font-semibold text-white mb-4">
           Your email has been confirmed!
         </h1>
-        <Link href="/login">
+        <Link href="/auth">
           <Button className="mt-4 px-6 py-2 text-sm font-medium bg-[#008966] text-white hover:bg-[#007d57] transition duration-200 ease-in-out">
             Login
           </Button>
