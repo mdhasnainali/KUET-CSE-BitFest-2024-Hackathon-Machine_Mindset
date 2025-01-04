@@ -59,6 +59,7 @@ class SearchContentView(APIView):
             return Response(serializer.errors, status=400)
 
         search_text = serializer.validated_data.get("search_text")
+        en_search_text = search_text
 
         if not contains_bangla_script(search_text):
             search_text = process_text_with_llm_endpoint(search_text)
@@ -71,7 +72,7 @@ class SearchContentView(APIView):
         content_serializer = ContentSerializer(content, many=True)
 
         # teacher searching
-        teacher = Teacher.objects.filter(name__icontains=search_text)
+        teacher = Teacher.objects.filter(name__icontains=en_search_text)
         teacher_serializer = ProfileSerializer(teacher, many=True)
 
         return Response(

@@ -102,7 +102,7 @@ class ContentManagementView(APIView):
                 body=bangla,
                 date=timezone.now(),
                 author=teacher.name,
-                font=f"{serializer.validated_data.get("font")}.ttf",
+                font=f"{serializer.validated_data.get('font')}.ttf",
             )
             print("---------------- POST ---------------")
             print(title, caption, bangla)
@@ -149,7 +149,7 @@ class ContentManagementView(APIView):
                     body=bangla,
                     date=timezone.now(),
                     author=teacher.name,
-                    font=f"{serializer.validated_data.get("font")}.ttf",
+                    font=f"{serializer.validated_data.get('font')}.ttf",
                 )
                 print("--------------- PUT -----------------")
                 print(title, caption, bangla)
