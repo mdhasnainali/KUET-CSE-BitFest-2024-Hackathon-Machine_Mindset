@@ -53,7 +53,7 @@ BanglaShift is a modern web and mobile app that makes interacting with the Benga
 - **Mobile App:** Flutter
 - **Backend**: Django, Django Rest Framework, weasyprint, SimpleJWT Authentication
 - **Database**: SQLite3
-- **AI**: Llama 3.1 8B instruct model, MLflow, pyTorch, FastAPI (for production server)
+- **AI**: Llama 3.1 8B instruct model, MLflow, pyTorch, FastAPI (as a Micro Service)
 
 # Installation
 
