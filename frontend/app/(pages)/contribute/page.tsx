@@ -66,6 +66,7 @@ const Page = () => {
                   Banglish
                 </h3>
                 <Textarea
+                placeholder="Type Banglish text here"
                   value={data.banglish}
                   onChange={(e) => handleTextChange("banglish", e.target.value)}
                   className="w-full h-[400px] resize-none"
@@ -76,6 +77,7 @@ const Page = () => {
                   Bangla
                 </h3>
                 <Textarea
+                placeholder="Type Bangla text here"
                   value={data.bangla}
                   onChange={(e) => handleTextChange("bangla", e.target.value)}
                   className="w-full h-[400px] resize-none"
