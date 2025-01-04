@@ -116,23 +116,50 @@ const AnalyticsDashboard = () => {
     }
   };
   // metric values
+
+  const [totalPdf, settotalPdf] = useState("");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_ROOT_URL}/administrator/analytics/`,
+          {
+            headers: {
+              Authorization: `Bearer ${userData.access_token}`,
+            },
+          }
+        );
+        
+        settotalPdf(res.data.total_pdfs);
+        console.log(res);
+       
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to fetch students");
+      }
+    };
+
+    fetchData();
+  }, [userData.access_token]);
   const MetricValuesAdmin = [
     {
       title: "Total Students",
       value: students.length,
+      // value: students.length,
       description: "Total students registered",
     },
     {
       title: "Total Teachers",
       value: teachers.length,
+      // value: teachers.length,
       description: "Number of teachers registered",
     },
+
     {
-      title: "Chatbot Interactions",
-      value: "328",
-      description: "Total chatbot conversations",
+      title: "Total Pdf",
+      value: totalPdf || 5,
+      description: "Number of Padf",
     },
-    { title: "Total Pdf", value: "12", description: "Number of Padf" },
   ];
 
   return (

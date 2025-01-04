@@ -9,11 +9,11 @@ const PagesManifestPlugin = () => {
   const [isRightPanelActive, setRightPanelActive] = useState(false);
   const User_Data = JSON.parse(localStorage.getItem("user_data") || "{}");
   const router = useRouter();
-  // useEffect(() => {
-  //   if (User_Data.access_token) {
-  //     router.push("/");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (User_Data.access_token) {
+      router.push("/");
+    }
+  }, []);
 
   return (
     <div className="  mx-2 flex flex-col items-center pt-28  bg-white dark:bg-[#020817] h-screen">

@@ -8,10 +8,10 @@ import axios from "axios";
 const Teacher = () => {
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [email, setEmail] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false); // Add state for upload status
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

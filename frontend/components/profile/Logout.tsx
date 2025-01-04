@@ -7,8 +7,7 @@ const Logout = () => {
   const handleLogout = () => {
     try {
       localStorage.removeItem("user_data");
-      router.push("/auth");
-      router.refresh();
+      window.location.href = "/auth"; 
       toast.success("Logout successful");
     } catch (e) {
       toast.error("Logout failed");

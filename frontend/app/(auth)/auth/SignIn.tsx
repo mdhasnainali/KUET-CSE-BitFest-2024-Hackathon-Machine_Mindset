@@ -21,7 +21,7 @@ const SignIn = () => {
         }
       );
 
-      const { access, refresh, normal_user, admin, user, role } = res.data;
+      const { access, refresh, normal_user, admin, user, role,image } = res.data;
 
       const userData = {
         access_token: access,
@@ -30,12 +30,13 @@ const SignIn = () => {
         normal_user,
         admin,
         role: role,
+        image: image,
       };
       localStorage.setItem("user_data", JSON.stringify(userData));
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
       toast.success("Login successful");
-      router.push("/");
+      window.location.href = "/"; 
     } catch (error) {
       toast.error("Login failed");
       console.log("Error", error);

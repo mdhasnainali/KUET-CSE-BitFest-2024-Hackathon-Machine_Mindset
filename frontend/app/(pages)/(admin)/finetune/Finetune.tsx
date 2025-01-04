@@ -50,6 +50,7 @@ const Finetune = () => {
         }
       );
       toast.success("Contribution deleted successfully");
+      window.location.href = "/finetune";
     } catch (error) {
       toast.error("Failed to delete contribution");
     }
@@ -60,6 +61,7 @@ const Finetune = () => {
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_ROOT_URL}/administrator/train_llm_model/`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${userData.access_token}`,
@@ -67,14 +69,15 @@ const Finetune = () => {
         }
       );
       console.log(res);
-      toast.success("LLm model trained successfully");
+      window.location.href = "/finetune";
+      toast.success("LLm model training Started ");
     } catch (error) {
       console.log(error);
       toast.error("Failed to train LLM model");
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="container mx-auto p-4">
+    <form className="container mx-auto p-4">
       <div>
         <Card className="shadow-lg">
           <CardHeader>
@@ -85,6 +88,7 @@ const Finetune = () => {
               Add or Remove data to improve the conversion
             </CardDescription>
             <Button
+              onClick={handleSubmit}
               type="submit"
               className="animate-shimmer  border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-4 font-medium text-slate-400 transition-colors"
             >

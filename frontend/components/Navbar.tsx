@@ -23,6 +23,8 @@ import { useEffect, useState } from "react";
 const Navbar = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [isTeacher, setIsTeacher] = useState(false);
+  const [isStudent, setIsStudent] = useState(false);
+
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -36,15 +38,17 @@ const Navbar = () => {
         setIsAdmin(true);
       }
     }
-    // console.log(user.role);
+    if (user.role === "STUDENT") {
+      setIsStudent(true);
+    }
   }, []);
-  // console.log(isAdmin);
 
   return (
     <nav className="bg-white z-50 dark:bg-[#020817] bg-opacity-30 backdrop-blur sticky top-0 p-4 px-8">
       <div className="container mx-auto flex justify-between items-center">
         <Link
           href={"/"}
+          onClick={() => (window.location.href = "/")}
           className="text-black dark:text-white text-2xl font-bold flex items-center "
         >
           <span className="transition-opacity duration-300 ease-in-out hover:opacity-75">
@@ -86,13 +90,17 @@ const Navbar = () => {
                   </span>
                 </Link>
               </li>
-              <li>
-                <Link href="/contribute">
-                  <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
-                    Contribute
-                  </span>
-                </Link>
-              </li>
+              {isAdmin || isTeacher || isStudent ? (
+                <li>
+                  <Link href="/contribute">
+                    <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 hover:underline">
+                      Contribute
+                    </span>
+                  </Link>
+                </li>
+              ) : (
+                ""
+              )}
             </>
           )}
 
@@ -119,7 +127,11 @@ const Navbar = () => {
           <Theme />
           {isLogin ? (
             <>
-              <Profile isTeacher={isTeacher} isAdmin={isAdmin} />
+              <Profile
+                isTeacher={isTeacher}
+                isStudent={isStudent}
+                isAdmin={isAdmin}
+              />
             </>
           ) : (
             <>
@@ -135,6 +147,7 @@ const Navbar = () => {
         {/* For mobile devices */}
         <div className="md:hidden block">
           <MobileNav
+            isStudent={isStudent}
             isLogin={isLogin}
             isTeacher={isTeacher}
             isAdmin={isAdmin}
@@ -149,10 +162,12 @@ const MobileNav = ({
   isLogin,
   isTeacher,
   isAdmin,
+  isStudent,
 }: {
   isLogin: any;
   isTeacher: any;
   isAdmin: any;
+  isStudent: any;
 }) => {
   return (
     <Sheet>
@@ -226,14 +241,18 @@ const MobileNav = ({
                 </Link>
               </li>
               <li>
-                <Link href="/contribute">
-                  <SheetTrigger>
-                    <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
-                      <FaEnvelope className="mr-3" />
-                      Contribute
-                    </span>
-                  </SheetTrigger>
-                </Link>
+                {isAdmin || isTeacher || isStudent ? (
+                  <Link href="/contribute">
+                    <SheetTrigger>
+                      <span className="cursor-pointer text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 flex items-center">
+                        <FaEnvelope className="mr-3" />
+                        Contribute
+                      </span>
+                    </SheetTrigger>
+                  </Link>
+                ) : (
+                  ""
+                )}
               </li>
             </>
           )}
@@ -266,7 +285,11 @@ const MobileNav = ({
         <div className="space-x-3 absolute left-2 bottom-2 flex items-center">
           {isLogin ? (
             <div className="dark:bg-gray-800 flex items-center space-x-2 dark:text-white p-4 rounded">
-              <Profile isTeacher={isTeacher} isAdmin={isAdmin} />
+              <Profile
+                isTeacher={isTeacher}
+                isStudent={isStudent}
+                isAdmin={isAdmin}
+              />
               <span>Md Tofaal Ahmed</span>
             </div>
           ) : (
