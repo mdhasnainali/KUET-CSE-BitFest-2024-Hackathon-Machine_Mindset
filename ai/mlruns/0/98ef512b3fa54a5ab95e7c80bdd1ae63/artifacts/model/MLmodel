@@ -1,0 +1,55 @@
+artifact_path: model
+flavors:
+  python_function:
+    config:
+      return_full_text: false
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.transformers
+    python_version: 3.10.12
+  transformers:
+    code: null
+    components:
+    - tokenizer
+    framework: pt
+    instance_type: TextGenerationPipeline
+    peft_adaptor: peft
+    pipeline_model_type: LlamaForCausalLM
+    source_model_name: unsloth/meta-llama-3.1-8b-bnb-4bit
+    source_model_revision: bce4d67c84977a9a59569309a13c92c277b20d94
+    task: text-generation
+    tokenizer_name: unsloth/meta-llama-3.1-8b-bnb-4bit
+    tokenizer_revision: bce4d67c84977a9a59569309a13c92c277b20d94
+    tokenizer_type: PreTrainedTokenizerFast
+    torch_dtype: torch.bfloat16
+    transformers_version: 4.47.1
+metadata:
+  prompt_template: 'You are a powerful Banglish-to-Bangla model. Given the banglish
+    text, your job is to translate the banglish into Bangla.
+
+
+    ### Instruction:
+
+    Convert the Input (Banglish) to Bangla
+
+
+    ### Input:
+
+    {prompt}
+
+
+    ### Response:
+
+    '
+mlflow_version: 2.19.0
+model_size_bytes: 167870113
+model_uuid: 0dd0bfe1bea14d618907604eadde90a1
+run_id: 98ef512b3fa54a5ab95e7c80bdd1ae63
+signature:
+  inputs: '[{"type": "string", "required": true}]'
+  outputs: '[{"type": "string", "required": true}]'
+  params: '[{"name": "max_new_tokens", "type": "long", "default": 256, "shape": null},
+    {"name": "repetition_penalty", "type": "double", "default": 1.15, "shape": null},
+    {"name": "return_full_text", "type": "boolean", "default": false, "shape": null}]'
+utc_time_created: '2025-01-03 11:26:03.810355'
