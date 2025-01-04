@@ -16,7 +16,7 @@ from django.db.models import Q
 from misc.utils import (
     contains_bangla_script,
     get_gemini_response,
-    process_text_with_llm_endpoint,
+    process_text_with_llm_endpoint,    
 )
 
 
@@ -59,6 +59,9 @@ class SearchContentView(APIView):
             return Response(serializer.errors, status=400)
 
         search_text = serializer.validated_data.get("search_text")
+
+        if not contains_bangla_script(search_text):
+            search_text = process_text_with_llm_endpoint(search_text)
 
         # content searching
         content = Content.objects.filter(
