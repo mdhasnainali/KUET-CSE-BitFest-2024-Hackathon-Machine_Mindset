@@ -54,5 +54,5 @@ class ContentSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         if instance.pdf_file:
-            ret["pdf_file"] = f"http://localhost:3000/{instance.pdf_file}"
+            ret["pdf_file"] = f"http://192.168.9.244:3000/{instance.pdf_file}"
         return ret

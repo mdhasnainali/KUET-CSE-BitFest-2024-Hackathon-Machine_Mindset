@@ -16,7 +16,7 @@ def contains_bangla_script(text):
 def get_gemini_response(message):
     url = f" https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={settings.GEMINI_API_KEY}"
 
-    new_message = message + "\n\nReply in Bangla"
+    new_message = message + "\n\nReply in Plain Bangla Text. No other formatting is required."
     request_body = {"contents": [{"parts": [{"text": new_message}]}]}
 
     response = requests.post(url, json=request_body)
@@ -37,7 +37,7 @@ def gpt_banglish_correction(message):
     }
 
     response = requests.post(url, json=request_body, 
-        headers={"Authorization": f"Bearer {settings.OPENAI_API_KEYs}"}
+        headers={"Authorization": f"Bearer {settings.OPENAI_API_KEY}"}
     )
 
     print(response.json())
