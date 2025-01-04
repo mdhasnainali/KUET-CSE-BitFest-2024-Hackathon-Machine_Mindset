@@ -44,6 +44,8 @@ BanglaShift is a modern web and mobile app that makes interacting with the Benga
 **3. Auto-Correction for Banglish Input**
 - We leverage OpenAI’s GPT model to automatically correct misspelled Banglish words before passing them to our LLM model, ensuring more accurate translations and a smoother user experience.
 
+**4. Dockerized Backend**
+- Our backend is dockerized for easy deployment and scaling, making it more efficient and cost-effective.
 
 
 
