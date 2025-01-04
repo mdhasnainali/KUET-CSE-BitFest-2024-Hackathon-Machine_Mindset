@@ -1,5 +1,5 @@
 from django.contrib import admin
-from teacher.models import Teacher
+from teacher.models import Teacher, Content
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
@@ -37,3 +37,9 @@ class TeacherAdmin(admin.ModelAdmin):
     )
     actions = None
     save_as = True
+
+
+@admin.register(Content)
+class ContentAdmin(admin.ModelAdmin):
+    list_display = ("title", "caption", "public", "bangla")
+    
