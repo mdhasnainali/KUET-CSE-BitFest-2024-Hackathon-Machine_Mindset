@@ -30,7 +30,7 @@ const Page = () => {
   const [input, setInput] = useState("");
   const [publicContent, setPublic] = useState(true);
   const [font, setFont] = useState("SirajeeSanjar");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const userData = JSON.parse(localStorage.getItem("user_data") || "{}");
   const router = useRouter();
 
