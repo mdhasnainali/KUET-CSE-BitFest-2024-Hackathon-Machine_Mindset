@@ -95,3 +95,245 @@ npm run dev
 
 # API Documentation
 
+## For Teachers:
+
+**1. Profile Management**
+
+Get Profile
+
+Method: GET
+
+URL: `{{baseURL}}/teacher/profile/`
+
+Update Profile
+
+Method: PUT
+
+URL: `{{baseURL}}/teacher/profile/`
+
+body:
+```
+{
+    "name": "Teacher Name",
+    "subject": "Subject",
+    "image_url": "https://profile-image.com/"
+}
+```
+
+
+**2. Content Management**
+
+Method: POST
+
+URL: `{{baseURL}}/teacher/content-management/`
+
+```
+{
+    "banglish": "Text content here...",
+    "public": true,
+    "font": "font name"
+}
+```
+
+**3. Get All Contents**
+
+Method: GET
+
+URL: `{{baseURL}}/teacher/content-management/`
+
+**4. Get Single Content**
+
+Method: GET
+
+URL: `{{baseURL}}/teacher/content-management/?content_id=7`
+
+**4. Update Content**
+
+Method: PUT
+
+URL: `{{baseURL}}/teacher/content-management/7`
+
+```
+{
+    "banglish": "Updated content text...",
+    "public": true,
+    "font": "AdorNoirrit"
+}
+```
+
+**5. Delete Content**
+
+Method: DELETE
+
+URL: `{{baseURL}}/teacher/content-management/6`
+
+**6. Analytics**
+
+Method: GET
+
+URL: `{{baseURL}}/teacher/analytics/`
+
+
+**8. Registration**
+
+Method: POST
+
+URL: `{{baseURL}}/teacher/registration/`
+
+```
+{
+    "name": "Teacher Name",
+    "subject": "Subject",
+    "email": "email@address.com",
+    "password1": "123456",
+    "password2": "123456",
+    "image_url": "https://profile.picture/"
+}
+```
+
+
+
+## For Students:
+
+**1. Get Profile**
+
+Method: GET
+
+URL: `{{baseURL}}/student/profile/`
+
+**2. Update Profile**
+
+Method: PUT
+
+URL: `{{baseURL}}/student/profile/`
+
+```
+{
+    "name": "Student Name",
+    "roll": "123456",
+    "level": "Level",
+    "image_url": "https://profile.picture/"
+}
+```
+
+**3. Registration**
+
+
+Method: POST
+
+URL: `{{baseURL}}/student/registration/`
+
+```
+{
+    "name": "Student Name",
+    "roll": "123456",
+    "level": "Level",
+    "email": "student@email.address",
+    "password1": "123456",
+    "password2": "123456",
+    "image_url": "https://profile.picture/"
+}
+```
+
+## Public API
+
+**1. Get all public contents**
+
+Method: GET
+
+URL: `{{baseURL}}/misc/contents/`
+
+**2. Search**
+
+Method: POST
+
+URL: `{{baseURL}}/misc/search/`
+
+```
+{
+    "search_text": "..."
+}
+```
+
+## Chatbot API
+
+**1. Chatbot**
+
+Method: POST
+
+URL: `{{baseURL}}/misc/chatbot/`
+
+```
+{
+    "message": "banglish or bangla text here..."
+}
+```
+
+**2. Chat with Reference**
+
+Method: POST
+
+URL: `{{baseURL}}/misc/chatbot/`
+
+```
+{
+    "content_id": <id>,
+    "message": "banglish or bangla text here...",    
+}
+```
+
+
+## Administator
+
+**1. Create Contribution**
+
+Method: POST
+
+URL: `{{baseURL}}/administrator/contribution/`
+
+```
+{
+    "banglish": "Banglish text here...",
+    "bangla": "Bangla text here..."
+}
+```
+
+
+**2. Get All Contributions**
+
+Method: GET
+
+URL: `{{baseURL}}/administrator/contribution/`
+
+**3. Remove Contribution**
+
+Method: DELETE
+
+URL: `{{baseURL}}/administrator/contribution/7`
+
+
+**4. Train LLM Model**
+
+Method: POST
+
+URL: `{{baseURL}}/administrator/train_llm_model/`
+
+**5. Analytics**
+
+Method: GET
+
+URL: `{{baseURL}}/administrator/analytics/`
+
+
+**6. Get All Students**
+
+Method: GET
+
+URL: `{{baseURL}}/administrator/students/`
+
+**7. Get All Teachers**
+
+Method: GET
+
+URL: `{{baseURL}}/administrator/teachers/`
+
