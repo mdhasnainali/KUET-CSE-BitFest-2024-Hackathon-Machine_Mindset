@@ -1,5 +1,5 @@
 from django.contrib import admin
-from administrator.models import User
+from administrator.models import User, Contribution
 
 
 @admin.register(User)
@@ -40,3 +40,8 @@ class UserAdmin(admin.ModelAdmin):
     )
     actions = None
     save_as = True
+
+
+@admin.register(Contribution)
+class ContributionAdmin(admin.ModelAdmin):
+    list_display = ("user", "banglish", "bangla")

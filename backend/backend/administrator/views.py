@@ -88,7 +88,7 @@ class CustomConfirmEmailView(ConfirmEmailView):
 
         if confirmation:
             confirmation.confirm(self.request)
-            return redirect("https://petconnect-1-26xc.onrender.com/confirmation-email")
+            return redirect("http://192.168.15.78:3000/auth/confirm-email")
         else:
             return HttpResponse("Invalid or expired token", status=400)
 

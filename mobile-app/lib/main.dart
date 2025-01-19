@@ -27,7 +27,7 @@ class _WebViewAppState extends State<WebViewApp> {
   void initState() {
     super.initState();
     _webViewController = WebViewController()
-      ..loadRequest(Uri.parse("https://google.com/")) // Set the URL dynamically
+      ..loadRequest(Uri.parse("http://192.168.15.78:3000/")) // Set the URL dynamically
       ..setJavaScriptMode(JavaScriptMode.unrestricted) // Allow JavaScript
       ..setUserAgent(
           'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Mobile Safari/537.36'); // Set the user agent
@@ -36,6 +36,14 @@ class _WebViewAppState extends State<WebViewApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(      
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text(" ", style: TextStyle(
+          color: Colors.grey,
+          fontSize: 20,
+          fontWeight: FontWeight.bold
+        ),),
+      ),
       body: WebViewWidget(
         controller: _webViewController,
       ),
